@@ -1,0 +1,38 @@
+{
+  "name": "backend-gql",
+  "version": "0.0.1",
+  "description": "Boilerplate for Apollo GraphQL + Prisma Backend",
+  "main": "index.js",
+  "scripts": {
+    "generate": "graphql-codegen --config codegen.yml",
+    "compile": "npm run generate && tsc",
+    "postinstall": "npm run compile",
+    "start": "npm run compile && node ./dist/index.js",
+    "watch": "concurrently  --names \"CodeGen,TS,Nodemon\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --watch --config codegen.yml\"  \"tsc -w\" \"nodemon ./dist/index.js\""
+  },
+  "author": "Afnan Shaikh",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@apollo/server": "^4.9.3",
+    "@graphql-tools/schema": "^10.0.0",
+    "@prisma/client": "^5.2.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "graphql": "^16.8.0",
+    "graphql-tag": "^2.12.6"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/typescript": "4.0.1",
+    "@graphql-codegen/typescript-resolvers": "4.0.1",
+    "@types/cors": "^2.8.14",
+    "@types/node": "^20.6.0",
+    "concurrently": "^8.2.1",
+    "dotenv": "^16.3.1",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.2.0",
+    "typescript": "^5.2.2"
+  }
+}
