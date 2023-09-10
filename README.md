@@ -5,10 +5,10 @@ A minimal boilerplate for building a GraphQL API with Apollo Server, Prisma, and
 ## Getting Started
 
 1. Clone this repository.
-2. Install dependencies by running `npm i`.
+2. Install dependencies by running `pnpm i`.
 3. Configure your environment variables, take help of `.env.example`.
 4. Run database migrations or Prisma introspection (if needed).
-5. Start the Apollo Server for development by running `npm run watch`.
+5. Start the Apollo Server for development by running `pnpm run watch`.
 6. Access your GraphQL API at `http://localhost:1337/graphql`, port can be different here as per `.env` file.
 
 ## Project Structure

@@ -4,11 +4,13 @@
   "description": "Boilerplate for Apollo GraphQL + Prisma Backend",
   "main": "index.js",
   "scripts": {
-    "generate": "graphql-codegen --config codegen.yml",
-    "compile": "npm run generate && tsc",
+    "generate": "pnpx prisma generate && graphql-codegen --config codegen.yml",
+    "compile": "pnpm run generate && tsc",
+    "start": "pnpm run compile && node ./dist/index.js",
     "postinstall": "npm run compile",
-    "start": "npm run compile && node ./dist/index.js",
-    "watch": "concurrently  --names \"CodeGen,TS,Nodemon\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --watch --config codegen.yml\"  \"tsc -w\" \"nodemon ./dist/index.js\""
+    "watch": "concurrently  --names \"CodeGen,TS,Nodemon\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --watch --config codegen.yml\"  \"tsc -w\" \"nodemon ./dist/index.js\"",
+    "lint": "eslint \"src/**/*.ts\"",
+    "format": "eslint \"src/**/*.ts\" --fix"
   },
   "author": "Afnan Shaikh",
   "license": "ISC",
@@ -27,11 +29,18 @@
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/typescript": "4.0.1",
     "@graphql-codegen/typescript-resolvers": "4.0.1",
+    "@types/body-parser": "^1.19.2",
     "@types/cors": "^2.8.14",
+    "@types/express": "^4.17.17",
     "@types/node": "^20.6.0",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
     "concurrently": "^8.2.1",
     "dotenv": "^16.3.1",
+    "eslint": "^8.49.0",
+    "eslint-plugin-node": "^11.1.0",
     "nodemon": "^3.0.1",
+    "prettier": "^3.0.3",
     "prisma": "^5.2.0",
     "typescript": "^5.2.2"
   }

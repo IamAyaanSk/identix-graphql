@@ -1,12 +1,9 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
-import {
-  QueryResolvers,
-  ReturnStatus,
-} from "../../generated/resolvers-types.js";
+import { QueryResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 
 const queries: QueryResolvers = {
-  login: (_, { email, password }, { prisma }) => {
+  login: (_, {}, {}) => {
     return {
       status: ReturnStatus.Success,
     };

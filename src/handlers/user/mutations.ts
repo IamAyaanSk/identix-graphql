@@ -1,12 +1,9 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
-import {
-  MutationResolvers,
-  ReturnStatus,
-} from "../../generated/resolvers-types.js";
+import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 
 const mutations: MutationResolvers = {
-  async register(_, { email, password }, { prisma }) {
+  async register(_, {}, {}) {
     return {
       status: ReturnStatus.Success,
     };

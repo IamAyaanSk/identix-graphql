@@ -2,13 +2,17 @@
   "compilerOptions": {
     "rootDirs": ["src"],
     "outDir": "dist",
-    "lib": ["es2020"],
-    "target": "es2020",
-    "module": "esnext",
+    "lib": ["ES2020"],
+    "target": "ES2020",
+    "module": "ESNext",
+    "sourceMap": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "types": ["node"],
     "strict": true,
-    "baseUrl": "./src"
-  }
+    "baseUrl": "./src",
+    "noImplicitAny": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
