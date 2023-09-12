@@ -24,7 +24,7 @@ export type CreateLinkInput = {
   instagramURL?: InputMaybe<Scalars['String']['input']>;
   lastName: Scalars['String']['input'];
   linkedInURL?: InputMaybe<Scalars['String']['input']>;
-  phoneURL?: InputMaybe<Scalars['String']['input']>;
+  phoneNUM?: InputMaybe<Scalars['String']['input']>;
   twitterURL?: InputMaybe<Scalars['String']['input']>;
   websiteURL?: InputMaybe<Scalars['String']['input']>;
 };
@@ -34,6 +34,7 @@ export type Mutation = {
   createLink: StatusDataErrorString;
   deleteLink: StatusDataErrorString;
   register: StatusDataErrorString;
+  updateLink: StatusDataErrorString;
 };
 
 
@@ -53,6 +54,12 @@ export type MutationRegisterArgs = {
   lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   username?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type MutationUpdateLinkArgs = {
+  details: UpdateLinkInput;
+  linkId: Scalars['String']['input'];
 };
 
 export type Query = {
@@ -97,6 +104,18 @@ export type StatusDataErrorUserLinks = {
   data?: Maybe<Array<UserLink>>;
   error?: Maybe<Scalars['String']['output']>;
   status: ReturnStatus;
+};
+
+export type UpdateLinkInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  facebookURL?: InputMaybe<Scalars['String']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  instagramURL?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  linkedInURL?: InputMaybe<Scalars['String']['input']>;
+  phoneNUM?: InputMaybe<Scalars['String']['input']>;
+  twitterURL?: InputMaybe<Scalars['String']['input']>;
+  websiteURL?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UserLink = {
@@ -198,6 +217,7 @@ export type ResolversTypes = ResolversObject<{
   StatusDataErrorUserLink: ResolverTypeWrapper<StatusDataErrorUserLink>;
   StatusDataErrorUserLinks: ResolverTypeWrapper<StatusDataErrorUserLinks>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  UpdateLinkInput: UpdateLinkInput;
   UserLink: ResolverTypeWrapper<UserLink>;
 }>;
 
@@ -212,6 +232,7 @@ export type ResolversParentTypes = ResolversObject<{
   StatusDataErrorUserLink: StatusDataErrorUserLink;
   StatusDataErrorUserLinks: StatusDataErrorUserLinks;
   String: Scalars['String']['output'];
+  UpdateLinkInput: UpdateLinkInput;
   UserLink: UserLink;
 }>;
 
@@ -219,6 +240,7 @@ export type MutationResolvers<ContextType = CustomApolloContext, ParentType exte
   createLink?: Resolver<ResolversTypes['StatusDataErrorString'], ParentType, ContextType, RequireFields<MutationCreateLinkArgs, 'details'>>;
   deleteLink?: Resolver<ResolversTypes['StatusDataErrorString'], ParentType, ContextType, RequireFields<MutationDeleteLinkArgs, 'linkId'>>;
   register?: Resolver<ResolversTypes['StatusDataErrorString'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password'>>;
+  updateLink?: Resolver<ResolversTypes['StatusDataErrorString'], ParentType, ContextType, RequireFields<MutationUpdateLinkArgs, 'details' | 'linkId'>>;
 }>;
 
 export type QueryResolvers<ContextType = CustomApolloContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{

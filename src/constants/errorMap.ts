@@ -4,6 +4,8 @@ type ERROR =
   | 'user/notFound'
   | 'user/alreadyExists'
   | 'user/failCreate'
+  | 'link/failCreate'
+  | 'link/failUpdate'
   | 'link/notFound';
 
 const errorMap: Record<ERROR, string> = {
@@ -12,6 +14,8 @@ const errorMap: Record<ERROR, string> = {
   'user/notFound': 'Unable to authorize. Please check username/password combination',
   'user/alreadyExists': 'Email already registered',
   'user/failCreate': 'Registration failed',
+  'link/failCreate': 'Failed to create new link',
+  'link/failUpdate': 'Failed to update card',
   'link/notFound': 'No link exist for provided link_id',
 };
 

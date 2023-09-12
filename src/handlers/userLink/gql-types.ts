@@ -13,7 +13,7 @@ const types = gql`
     linkedInURL: String
     websiteURL: String
 
-    phoneURL: String
+    phoneNUM: String
   }
 
   input UpdateLinkInput {
@@ -28,7 +28,7 @@ const types = gql`
     linkedInURL: String
     websiteURL: String
 
-    phoneURL: String
+    phoneNUM: String
   }
 
   type UserLink {
