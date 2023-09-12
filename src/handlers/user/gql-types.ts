@@ -1,11 +1,6 @@
 import gql from 'graphql-tag';
 
-const types = gql`
-  type StatusDataErrorAuth {
-    status: ReturnStatus!
-    data: String
-    error: String
-  }
-`;
+// Export this in index.ts when using it
+const types = gql``;
 
 export { types };

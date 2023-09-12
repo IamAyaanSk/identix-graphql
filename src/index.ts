@@ -1,3 +1,6 @@
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig();
+
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
@@ -6,17 +9,14 @@ import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { PrismaClient } from '@prisma/client';
-import { config as dotenvConfig } from 'dotenv';
-
 import { schema } from './handlers/index.js';
-
-dotenvConfig();
+import { PORT } from './constants/global.js';
+import { getDecodedJWT } from './utils/getDecodedJWT.js';
 
 export interface CustomApolloContext {
   prisma: PrismaClient;
+  userId: string | null;
 }
-
-const PORT = process.env.PORT || 1337;
 
 const prisma = new PrismaClient();
 
@@ -36,7 +36,12 @@ app.use(
   cors<cors.CorsRequest>(),
   bodyParser.json(),
   expressMiddleware(server, {
-    context: async () => ({ prisma }),
+    context: async ({ req }) => {
+      const token: string = req.headers.authorization || '';
+      const decodedJWT = getDecodedJWT(token);
+
+      return { prisma, userId: decodedJWT.id || null };
+    },
   }),
 );
 

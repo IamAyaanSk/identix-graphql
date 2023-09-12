@@ -5,6 +5,12 @@ const types = gql`
     SUCCESS
     ERROR
   }
+
+  type StatusDataErrorString {
+    status: ReturnStatus!
+    data: String
+    error: String
+  }
 `;
 
 export { types };

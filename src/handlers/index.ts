@@ -6,12 +6,20 @@ import { types as commonTypeDefs } from './gql-types.js';
 
 import { queries as userQueries, mutations as userMutations, typeDefs as userTypeDefs } from './user/index.js';
 
+import {
+  queries as userLinkQueries,
+  mutations as userLinkMutations,
+  typeDefs as useLirnkTypeDefs,
+} from './userLink/index.js';
+
 const resolvers: Resolvers = {
   Query: {
     ...userQueries,
+    ...userLinkQueries,
   },
   Mutation: {
     ...userMutations,
+    ...userLinkMutations,
   },
 };
 
@@ -26,7 +34,7 @@ const rootMutationAndQuery = gql`
 `;
 
 const schema = makeExecutableSchema({
-  typeDefs: [rootMutationAndQuery, commonTypeDefs, ...userTypeDefs],
+  typeDefs: [rootMutationAndQuery, commonTypeDefs, ...userTypeDefs, ...useLirnkTypeDefs],
   resolvers,
 });
 
