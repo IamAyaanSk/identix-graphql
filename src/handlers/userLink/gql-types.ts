@@ -16,6 +16,21 @@ const types = gql`
     phoneURL: String
   }
 
+  input UpdateLinkInput {
+    firstName: String
+    lastName: String
+
+    email: String
+
+    facebookURL: String
+    instagramURL: String
+    twitterURL: String
+    linkedInURL: String
+    websiteURL: String
+
+    phoneURL: String
+  }
+
   type UserLink {
     linkId: String!
     userId: String!

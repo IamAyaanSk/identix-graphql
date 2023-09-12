@@ -47,7 +47,7 @@ const queries: QueryResolvers = {
     if (!userLink) {
       return {
         status: ReturnStatus.Error,
-        error: 'Link not found',
+        error: errorMap['link/notFound'],
       };
     }
 
