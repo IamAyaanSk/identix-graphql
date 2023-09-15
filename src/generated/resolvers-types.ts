@@ -33,6 +33,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createLink: StatusDataErrorString;
   deleteLink: StatusDataErrorString;
+  deleteUser: StatusDataErrorString;
   register: StatusDataErrorString;
   updateLink: StatusDataErrorString;
 };
@@ -239,6 +240,7 @@ export type ResolversParentTypes = ResolversObject<{
 export type MutationResolvers<ContextType = CustomApolloContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createLink?: Resolver<ResolversTypes['StatusDataErrorString'], ParentType, ContextType, RequireFields<MutationCreateLinkArgs, 'details'>>;
   deleteLink?: Resolver<ResolversTypes['StatusDataErrorString'], ParentType, ContextType, RequireFields<MutationDeleteLinkArgs, 'linkId'>>;
+  deleteUser?: Resolver<ResolversTypes['StatusDataErrorString'], ParentType, ContextType>;
   register?: Resolver<ResolversTypes['StatusDataErrorString'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password'>>;
   updateLink?: Resolver<ResolversTypes['StatusDataErrorString'], ParentType, ContextType, RequireFields<MutationUpdateLinkArgs, 'details' | 'linkId'>>;
 }>;

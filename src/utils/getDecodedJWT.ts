@@ -15,8 +15,6 @@ const getDecodedJWT = (token: string): jwt.JwtPayload & MyJwtPayload => {
 
     return decoded;
   } catch (error) {
-    console.log(error);
-
     return {};
   }
 };

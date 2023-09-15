@@ -4,6 +4,7 @@ type ERROR =
   | 'user/notAuthorize'
   | 'user/alreadyExists'
   | 'user/failCreate'
+  | 'user/failDelete'
   | 'link/failCreate'
   | 'link/failUpdate'
   | 'link/notDeleted'
@@ -15,6 +16,7 @@ const errorMap: Record<ERROR, string> = {
   'user/notAuthorize': 'Unable to authorize. Please check username/password combination',
   'user/alreadyExists': 'Email already registered',
   'user/failCreate': 'Registration failed',
+  'user/failDelete': 'Failed to delete account',
   'link/failCreate': 'Failed to create new link',
   'link/failUpdate': 'Failed to update card',
   'link/notDeleted': 'Unable to delete link',

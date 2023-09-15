@@ -6,7 +6,7 @@ import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types
 import { errorMap } from '../../constants/errorMap.js';
 
 const mutations: MutationResolvers = {
-  async register(_, { email, password, username, firstName, lastName }, { prisma }) {
+  register: async (_, { email, password, username, firstName, lastName }, { prisma }) => {
     // Check if user already exists
     const findUser = await prisma.user.findFirst({
       where: {
@@ -50,6 +50,45 @@ const mutations: MutationResolvers = {
       data: 'User Created Successfully',
     };
   },
+
+  deleteUser: async (_, {}, { prisma, userId }) => {
+    // Check if user is authenticated
+    if (!userId) {
+      return {
+        status: ReturnStatus.Error,
+        error: errorMap['auth/unauthenticated'],
+      };
+    }
+
+    // Delete user and his links
+    const deleteLinks = prisma.userLink.deleteMany({
+      where: {
+        userId,
+      },
+    });
+
+    const deleteUser = prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+
+    const transaction = await prisma.$transaction([deleteLinks, deleteUser]);
+
+    // Check if everything is deleted
+    if (!transaction) {
+      return {
+        status: ReturnStatus.Error,
+        error: errorMap['user/failDelete'],
+      };
+    }
+
+    // Return success message
+    return {
+      status: ReturnStatus.Success,
+      data: 'User deleted successsfully',
+    };
+  },
 };
 
 const mutationTypeDefs = gql`
@@ -61,6 +100,7 @@ const mutationTypeDefs = gql`
       firstName: String
       lastName: String
     ): StatusDataErrorString!
+    deleteUser: StatusDataErrorString!
   }
 `;
 
