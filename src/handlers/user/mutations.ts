@@ -7,12 +7,14 @@ import { errorMap } from '../../constants/errorMap.js';
 
 const mutations: MutationResolvers = {
   async register(_, { email, password, username, firstName, lastName }, { prisma }) {
+    // Check if user already exists
     const findUser = await prisma.user.findFirst({
       where: {
-        email: email,
+        email,
       },
     });
 
+    // If user exists return user already exists error
     if (findUser) {
       return {
         status: ReturnStatus.Error,
@@ -20,8 +22,10 @@ const mutations: MutationResolvers = {
       };
     }
 
+    // Create a hashed password if new user
     const hashedPwd = await bcrypt.hash(password, 12);
 
+    // Save user to database
     const user = await prisma.user.create({
       data: {
         email,
@@ -32,6 +36,7 @@ const mutations: MutationResolvers = {
       },
     });
 
+    // If user not saved return fail to create error
     if (!user) {
       return {
         status: ReturnStatus.Error,
@@ -39,6 +44,7 @@ const mutations: MutationResolvers = {
       };
     }
 
+    // If user created return success message
     return {
       status: ReturnStatus.Success,
       data: 'User Created Successfully',

@@ -5,6 +5,7 @@ import { errorMap } from '../../constants/errorMap.js';
 
 const queries: QueryResolvers = {
   getUserLinks: async (_, {}, { prisma, userId }) => {
+    // Check if user is authorized
     if (!userId) {
       return {
         status: ReturnStatus.Error,
@@ -12,12 +13,22 @@ const queries: QueryResolvers = {
       };
     }
 
+    // Get links associated to user
     const userLinks = await prisma.userLink.findMany({
       where: {
         userId,
       },
     });
 
+    // Return not fetched error if user link not fetched
+    if (!userLinks) {
+      return {
+        status: ReturnStatus.Error,
+        error: errorMap['link/notFetched'],
+      };
+    }
+
+    // Return links if user links fetched
     return {
       status: ReturnStatus.Success,
       data: userLinks.map((userLink) => {
@@ -31,6 +42,7 @@ const queries: QueryResolvers = {
   },
 
   getUserLink: async (_, { linkId }, { prisma, userId }) => {
+    // Check if user is authorized
     if (!userId) {
       return {
         status: ReturnStatus.Error,
@@ -38,19 +50,22 @@ const queries: QueryResolvers = {
       };
     }
 
+    // Search for user link
     const userLink = await prisma.userLink.findFirst({
       where: {
         linkId,
       },
     });
 
+    // If user link not fetched return not fetched error
     if (!userLink) {
       return {
         status: ReturnStatus.Error,
-        error: errorMap['link/notFound'],
+        error: errorMap['link/notFetched'],
       };
     }
 
+    // return link if link fetched
     return {
       status: ReturnStatus.Success,
       data: {

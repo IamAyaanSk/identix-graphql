@@ -5,6 +5,7 @@ import { errorMap } from '../../constants/errorMap.js';
 
 const mutations: MutationResolvers = {
   createLink: async (_, { details }, { prisma, userId }) => {
+    // Check if user is authorized
     if (!userId) {
       return {
         status: ReturnStatus.Error,
@@ -12,6 +13,7 @@ const mutations: MutationResolvers = {
       };
     }
 
+    // If authorized, create user link
     const userLink = await prisma.userLink.create({
       data: {
         userId: userId,
@@ -27,6 +29,7 @@ const mutations: MutationResolvers = {
       },
     });
 
+    // If link not created return failed to create link  error
     if (!userLink) {
       return {
         status: ReturnStatus.Error,
@@ -34,6 +37,7 @@ const mutations: MutationResolvers = {
       };
     }
 
+    // If link created return successs message
     return {
       status: ReturnStatus.Success,
       data: 'UserLink Created Successfully',
@@ -41,6 +45,7 @@ const mutations: MutationResolvers = {
   },
 
   deleteLink: async (_, { linkId }, { prisma, userId }) => {
+    // Check if user is authorized
     if (!userId) {
       return {
         status: ReturnStatus.Error,
@@ -48,19 +53,22 @@ const mutations: MutationResolvers = {
       };
     }
 
+    // Find link to delete
     const deleteLink = await prisma.userLink.delete({
       where: {
         linkId,
       },
     });
 
+    // If link not deleted return link not deleted error
     if (!deleteLink) {
       return {
         status: ReturnStatus.Error,
-        error: errorMap['link/notFound'],
+        error: errorMap['link/notDeleted'],
       };
     }
 
+    // Else return success message
     return {
       status: ReturnStatus.Success,
       data: 'UserLink deleted successfully',
@@ -68,6 +76,7 @@ const mutations: MutationResolvers = {
   },
 
   updateLink: async (_, { linkId, details }, { prisma, userId }) => {
+    // Check if user is authorized
     if (!userId) {
       return {
         status: ReturnStatus.Error,
@@ -75,6 +84,7 @@ const mutations: MutationResolvers = {
       };
     }
 
+    // Find link to update
     const updateLink = await prisma.userLink.update({
       where: {
         linkId,
@@ -92,6 +102,7 @@ const mutations: MutationResolvers = {
       },
     });
 
+    // If link not found return failed to update error
     if (!updateLink) {
       return {
         status: ReturnStatus.Error,
@@ -99,6 +110,7 @@ const mutations: MutationResolvers = {
       };
     }
 
+    // Else return success message
     return {
       status: ReturnStatus.Success,
       data: 'UserLink updated successfully',

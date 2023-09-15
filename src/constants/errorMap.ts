@@ -1,22 +1,24 @@
 type ERROR =
   | 'auth/unauthorized'
   | 'auth/unauthenticated'
-  | 'user/notFound'
+  | 'user/notAuthorize'
   | 'user/alreadyExists'
   | 'user/failCreate'
   | 'link/failCreate'
   | 'link/failUpdate'
-  | 'link/notFound';
+  | 'link/notDeleted'
+  | 'link/notFetched';
 
 const errorMap: Record<ERROR, string> = {
   'auth/unauthorized': 'You are not authorized to perform this action',
   'auth/unauthenticated': 'You are not authenticated',
-  'user/notFound': 'Unable to authorize. Please check username/password combination',
+  'user/notAuthorize': 'Unable to authorize. Please check username/password combination',
   'user/alreadyExists': 'Email already registered',
   'user/failCreate': 'Registration failed',
   'link/failCreate': 'Failed to create new link',
   'link/failUpdate': 'Failed to update card',
-  'link/notFound': 'No link exist for provided link_id',
+  'link/notDeleted': 'Unable to delete link',
+  'link/notFetched': 'Unable to fetch links',
 };
 
 export { errorMap };
