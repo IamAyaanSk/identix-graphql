@@ -2,46 +2,63 @@ import gql from 'graphql-tag';
 
 import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 import { errorMap } from '../../constants/errorMap.js';
+import { createUserLinkSchema, updateUserLink } from '../../JOI/userLinkJOISchemas.js';
 
 const mutations: MutationResolvers = {
   createLink: async (_, { details }, { prisma, userId }) => {
-    // Check if user is authorized
-    if (!userId) {
+    try {
+      await createUserLinkSchema.validateAsync(details);
+
+      // Check if user is authorized
+      if (!userId) {
+        return {
+          status: ReturnStatus.Error,
+          error: errorMap['auth/unauthenticated'],
+        };
+      }
+
+      // If authorized, create user link
+      const userLink = await prisma.userLink.create({
+        data: {
+          userId: userId,
+          firstName: details.firstName,
+          lastName: details.lastName,
+          email: details.email,
+          facebook: details.facebookURL,
+          instagram: details.instagramURL,
+          twitter: details.twitterURL,
+          linkedIn: details.linkedInURL,
+          website: details.websiteURL,
+          phone: details.phoneNUM,
+        },
+      });
+
+      // If link not created return failed to create link  error
+      if (!userLink) {
+        return {
+          status: ReturnStatus.Error,
+          error: errorMap['link/failCreate'],
+        };
+      }
+
+      // If link created return successs message
       return {
-        status: ReturnStatus.Error,
-        error: errorMap['auth/unauthenticated'],
+        status: ReturnStatus.Success,
+        data: 'UserLink Created Successfully',
       };
-    }
+    } catch (validationError) {
+      if (validationError instanceof Error) {
+        return {
+          status: ReturnStatus.Error,
+          error: validationError.message,
+        };
+      }
 
-    // If authorized, create user link
-    const userLink = await prisma.userLink.create({
-      data: {
-        userId: userId,
-        firstName: details.firstName,
-        lastName: details.lastName,
-        email: details.email,
-        facebook: details.facebookURL,
-        instagram: details.instagramURL,
-        twitter: details.twitterURL,
-        linkedIn: details.linkedInURL,
-        website: details.websiteURL,
-        phone: details.phoneNUM,
-      },
-    });
-
-    // If link not created return failed to create link  error
-    if (!userLink) {
       return {
         status: ReturnStatus.Error,
         error: errorMap['link/failCreate'],
       };
     }
-
-    // If link created return successs message
-    return {
-      status: ReturnStatus.Success,
-      data: 'UserLink Created Successfully',
-    };
   },
 
   deleteLink: async (_, { linkId }, { prisma, userId }) => {
@@ -76,45 +93,60 @@ const mutations: MutationResolvers = {
   },
 
   updateLink: async (_, { linkId, details }, { prisma, userId }) => {
-    // Check if user is authorized
-    if (!userId) {
+    try {
+      await updateUserLink.validateAsync(details);
+      // Check if user is authorized
+      if (!userId) {
+        return {
+          status: ReturnStatus.Error,
+          error: errorMap['auth/unauthenticated'],
+        };
+      }
+
+      // Find link to update
+      const updateLink = await prisma.userLink.update({
+        where: {
+          linkId,
+        },
+        data: {
+          firstName: details.firstName || undefined,
+          lastName: details.lastName || undefined,
+          email: details.email || undefined,
+          facebook: details.facebookURL || undefined,
+          instagram: details.instagramURL || undefined,
+          twitter: details.twitterURL || undefined,
+          linkedIn: details.linkedInURL || undefined,
+          website: details.websiteURL || undefined,
+          phone: details.phoneNUM || undefined,
+        },
+      });
+
+      // If link not found return failed to update error
+      if (!updateLink) {
+        return {
+          status: ReturnStatus.Error,
+          error: errorMap['link/failUpdate'],
+        };
+      }
+
+      // Else return success message
+      return {
+        status: ReturnStatus.Success,
+        data: 'UserLink updated successfully',
+      };
+    } catch (validationError) {
+      if (validationError instanceof Error) {
+        return {
+          status: ReturnStatus.Error,
+          error: validationError.message,
+        };
+      }
+
       return {
         status: ReturnStatus.Error,
-        error: errorMap['auth/unauthenticated'],
+        error: errorMap['user/failCreate'],
       };
     }
-
-    // Find link to update
-    const updateLink = await prisma.userLink.update({
-      where: {
-        linkId,
-      },
-      data: {
-        firstName: details.firstName || undefined,
-        lastName: details.lastName || undefined,
-        email: details.email || undefined,
-        facebook: details.facebookURL || undefined,
-        instagram: details.instagramURL || undefined,
-        twitter: details.twitterURL || undefined,
-        linkedIn: details.linkedInURL || undefined,
-        website: details.websiteURL || undefined,
-        phone: details.phoneNUM || undefined,
-      },
-    });
-
-    // If link not found return failed to update error
-    if (!updateLink) {
-      return {
-        status: ReturnStatus.Error,
-        error: errorMap['link/failUpdate'],
-      };
-    }
-
-    // Else return success message
-    return {
-      status: ReturnStatus.Success,
-      data: 'UserLink updated successfully',
-    };
   },
 };
 

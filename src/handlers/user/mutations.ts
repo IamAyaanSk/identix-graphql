@@ -4,51 +4,69 @@ import bcrypt from 'bcrypt';
 
 import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 import { errorMap } from '../../constants/errorMap.js';
+import { createUserSchema } from '../../JOI/userJOISchemas.js';
 
 const mutations: MutationResolvers = {
   register: async (_, { email, password, username, firstName, lastName }, { prisma }) => {
-    // Check if user already exists
-    const findUser = await prisma.user.findFirst({
-      where: {
-        email,
-      },
-    });
+    try {
+      await createUserSchema.validateAsync({ username, password, email, firstName, lastName });
 
-    // If user exists return user already exists error
-    if (findUser) {
+      // Check if user already exists
+      const findUser = await prisma.user.findFirst({
+        where: {
+          email,
+        },
+      });
+
+      // If user exists return user already exists error
+      if (findUser) {
+        return {
+          status: ReturnStatus.Error,
+          error: errorMap['user/alreadyExists'],
+        };
+      }
+
+      // Create a hashed password if new user
+      const hashedPwd = await bcrypt.hash(password, 12);
+
+      // Save user to database
+      const user = await prisma.user.create({
+        data: {
+          email,
+          password: hashedPwd,
+          username,
+          firstName,
+          lastName,
+        },
+      });
+
+      // If user not saved return fail to create error
+      if (!user) {
+        return {
+          status: ReturnStatus.Error,
+          error: errorMap['user/failCreate'],
+        };
+      }
+
+      // Return Success message if user registered
       return {
-        status: ReturnStatus.Error,
-        error: errorMap['user/alreadyExists'],
+        status: ReturnStatus.Success,
+        data: 'User registered successfully',
       };
-    }
-
-    // Create a hashed password if new user
-    const hashedPwd = await bcrypt.hash(password, 12);
-
-    // Save user to database
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPwd,
-        username,
-        firstName,
-        lastName,
-      },
-    });
-
-    // If user not saved return fail to create error
-    if (!user) {
+    } catch (validationError) {
+      // Handle validation errors
+      if (validationError instanceof Error) {
+        return {
+          status: ReturnStatus.Error,
+          error: validationError.message.replace(/"/g, ''), // /"/g used to clear unwanted backslash in message
+        };
+      }
+      // Handle other errors
       return {
         status: ReturnStatus.Error,
         error: errorMap['user/failCreate'],
       };
     }
-
-    // If user created return success message
-    return {
-      status: ReturnStatus.Success,
-      data: 'User Created Successfully',
-    };
   },
 
   deleteUser: async (_, {}, { prisma, userId }) => {
