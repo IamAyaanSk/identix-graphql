@@ -18,7 +18,7 @@ const createUserLinkSchema = Joi.object({
     .message('Please enter valid twitter URL'),
 
   linkedInURL: Joi.string()
-    .pattern(/^https:\/\/www\.instagram\.com\/in\/[a-zA-Z0-9_.-]+\/?$/, 'LinkedIn URL')
+    .pattern(/^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_.-]+\/?$/, 'LinkedIn URL')
     .message('Please enter valid linkedin URL'),
 
   websiteURL: Joi.string()
@@ -48,7 +48,7 @@ const updateUserLink = Joi.object({
     .message('Please enter valid twitter URL'),
 
   linkedInURL: Joi.string()
-    .pattern(/^https:\/\/www\.instagram\.com\/in\/[a-zA-Z0-9_.-]+\/?$/, 'LinkedIn URL')
+    .pattern(/^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_.-]+\/?$/, 'LinkedIn URL')
     .message('Please enter valid linkedin URL'),
 
   websiteURL: Joi.string()

@@ -58,7 +58,7 @@ const mutations: MutationResolvers = {
       if (validationError instanceof Error) {
         return {
           status: ReturnStatus.Error,
-          error: validationError.message.replace(/"/g, ''), // /"/g used to clear unwanted backslash in message
+          error: validationError.message,
         };
       }
       // Handle other errors
