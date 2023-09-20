@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { QueryResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 import { dateToEpochTimestamp } from '../../utils/dateToEpochTimestamp.js';
-import { errorMap } from '../../constants/errorMap.js';
+import { internalErrorMap } from '../../constants/internalErrorMap.js';
 
 const queries: QueryResolvers = {
   getUserLinks: async (_, {}, { prisma, userId }) => {
@@ -9,7 +9,7 @@ const queries: QueryResolvers = {
     if (!userId) {
       return {
         status: ReturnStatus.Error,
-        error: errorMap['auth/unauthenticated'],
+        error: internalErrorMap['auth/unauthenticated'],
       };
     }
 
@@ -24,7 +24,7 @@ const queries: QueryResolvers = {
     if (!userLinks) {
       return {
         status: ReturnStatus.Error,
-        error: errorMap['link/notFetched'],
+        error: internalErrorMap['link/notFetched'],
       };
     }
 
@@ -46,7 +46,7 @@ const queries: QueryResolvers = {
     if (!userId) {
       return {
         status: ReturnStatus.Error,
-        error: errorMap['auth/unauthenticated'],
+        error: internalErrorMap['auth/unauthenticated'],
       };
     }
 
@@ -61,7 +61,7 @@ const queries: QueryResolvers = {
     if (!userLink) {
       return {
         status: ReturnStatus.Error,
-        error: errorMap['link/notFetched'],
+        error: internalErrorMap['link/notFetched'],
       };
     }
 

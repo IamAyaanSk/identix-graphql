@@ -10,7 +10,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { PrismaClient } from '@prisma/client';
 import { schema } from './handlers/index.js';
-import { PORT } from './constants/global.js';
+import { JWT_SECRET_KEY, PORT } from './constants/global.js';
 import { getDecodedJWT } from './utils/getDecodedJWT.js';
 
 export interface CustomApolloContext {
@@ -39,7 +39,7 @@ app.use(
   expressMiddleware(server, {
     context: async ({ req }) => {
       const token: string = req.headers.authorization || '';
-      const decodedJWT = getDecodedJWT(token);
+      const decodedJWT = getDecodedJWT(token, JWT_SECRET_KEY);
 
       return { prisma, userId: decodedJWT.id || null, token };
     },

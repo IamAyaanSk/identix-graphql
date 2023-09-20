@@ -1,10 +1,11 @@
+import { UserRegisterInput, UserRequestPasswordResetInput } from 'generated/resolvers-types';
 import Joi from 'joi';
 
-const createUserSchema = Joi.object({
+const JOIcreateUserSchema = Joi.object<UserRegisterInput>({
   username: Joi.string().required().max(20).messages({
     'string.base': 'Username should be a string',
     'string.empty': 'Username is required',
-    'string.max': 'Only 20 characters allowed in username',
+    'string.max': 'No more than 20 characters allowed in username',
   }),
   email: Joi.string()
     .email({ tlds: { allow: false } })
@@ -30,4 +31,15 @@ const createUserSchema = Joi.object({
   }),
 });
 
-export { createUserSchema };
+const JOIrequestPasswordResetSchema = Joi.object<UserRequestPasswordResetInput>({
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required()
+    .messages({
+      'string.base': 'Email should be a string',
+      'string.empty': 'Email is required',
+      'string.email': 'Email is not valid',
+    }),
+});
+
+export { JOIcreateUserSchema, JOIrequestPasswordResetSchema };

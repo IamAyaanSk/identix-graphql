@@ -1,26 +1,32 @@
-type ERROR =
+type ErrorMapKey =
   | 'auth/unauthorized'
   | 'auth/unauthenticated'
   | 'user/notAuthorize'
   | 'user/alreadyExists'
   | 'user/failCreate'
   | 'user/failDelete'
+  | 'user/notFound'
+  | 'user/failPasswordReset'
   | 'link/failCreate'
   | 'link/failUpdate'
   | 'link/notDeleted'
-  | 'link/notFetched';
+  | 'link/notFetched'
+  | 'server/failComplete';
 
-const errorMap: Record<ERROR, string> = {
+const internalErrorMap: Record<ErrorMapKey, string> = {
   'auth/unauthorized': 'You are not authorized to perform this action',
   'auth/unauthenticated': 'You are not authenticated',
   'user/notAuthorize': 'Unable to authorize. Please check username/password combination',
   'user/alreadyExists': 'Email already registered',
   'user/failCreate': 'Registration failed',
   'user/failDelete': 'Failed to delete account',
+  'user/notFound': 'User not found',
+  'user/failPasswordReset': 'Expired or invalid request',
   'link/failCreate': 'Failed to create new link',
-  'link/failUpdate': 'Failed to update card',
+  'link/failUpdate': 'Failed to update link',
   'link/notDeleted': 'Unable to delete link',
   'link/notFetched': 'Unable to fetch links',
+  'server/failComplete': 'Something went wrong, please try again later',
 };
 
-export { errorMap };
+export { internalErrorMap };

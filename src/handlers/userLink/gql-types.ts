@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 const types = gql`
-  input CreateLinkInput {
+  input UserLinkCreateInput {
     firstName: String!
     lastName: String!
 
@@ -16,7 +16,7 @@ const types = gql`
     phoneNUM: String
   }
 
-  input UpdateLinkInput {
+  input UserLinkUpdateInput {
     firstName: String
     lastName: String
 

@@ -1,19 +1,19 @@
 import gql from 'graphql-tag';
 
 import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
-import { errorMap } from '../../constants/errorMap.js';
-import { createUserLinkSchema, updateUserLink } from '../../JOI/userLinkJOISchemas.js';
+import { internalErrorMap } from '../../constants/internalErrorMap.js';
+import { JOIcreateUserLinkSchema, JOIUpdateUserLinkSchema } from '../../joi/userLinkJOISchemas.js';
 
 const mutations: MutationResolvers = {
   createLink: async (_, { details }, { prisma, userId }) => {
     try {
-      await createUserLinkSchema.validateAsync(details);
+      await JOIcreateUserLinkSchema.validateAsync(details);
 
       // Check if user is authorized
       if (!userId) {
         return {
           status: ReturnStatus.Error,
-          error: errorMap['auth/unauthenticated'],
+          error: internalErrorMap['auth/unauthenticated'],
         };
       }
 
@@ -37,7 +37,7 @@ const mutations: MutationResolvers = {
       if (!userLink) {
         return {
           status: ReturnStatus.Error,
-          error: errorMap['link/failCreate'],
+          error: internalErrorMap['link/failCreate'],
         };
       }
 
@@ -56,7 +56,7 @@ const mutations: MutationResolvers = {
 
       return {
         status: ReturnStatus.Error,
-        error: errorMap['link/failCreate'],
+        error: internalErrorMap['link/failCreate'],
       };
     }
   },
@@ -66,7 +66,7 @@ const mutations: MutationResolvers = {
     if (!userId) {
       return {
         status: ReturnStatus.Error,
-        error: errorMap['auth/unauthenticated'],
+        error: internalErrorMap['auth/unauthenticated'],
       };
     }
 
@@ -81,7 +81,7 @@ const mutations: MutationResolvers = {
     if (!deleteLink) {
       return {
         status: ReturnStatus.Error,
-        error: errorMap['link/notDeleted'],
+        error: internalErrorMap['link/notDeleted'],
       };
     }
 
@@ -94,12 +94,13 @@ const mutations: MutationResolvers = {
 
   updateLink: async (_, { linkId, details }, { prisma, userId }) => {
     try {
-      await updateUserLink.validateAsync(details);
+      await JOIUpdateUserLinkSchema.validateAsync(details);
+
       // Check if user is authorized
       if (!userId) {
         return {
           status: ReturnStatus.Error,
-          error: errorMap['auth/unauthenticated'],
+          error: internalErrorMap['auth/unauthenticated'],
         };
       }
 
@@ -125,7 +126,7 @@ const mutations: MutationResolvers = {
       if (!updateLink) {
         return {
           status: ReturnStatus.Error,
-          error: errorMap['link/failUpdate'],
+          error: internalErrorMap['link/failUpdate'],
         };
       }
 
@@ -134,17 +135,17 @@ const mutations: MutationResolvers = {
         status: ReturnStatus.Success,
         data: 'UserLink updated successfully',
       };
-    } catch (validationError) {
-      if (validationError instanceof Error) {
+    } catch (error) {
+      if (error instanceof Error) {
         return {
           status: ReturnStatus.Error,
-          error: validationError.message,
+          error: error.message,
         };
       }
 
       return {
         status: ReturnStatus.Error,
-        error: errorMap['user/failCreate'],
+        error: internalErrorMap['user/failCreate'],
       };
     }
   },
@@ -152,9 +153,9 @@ const mutations: MutationResolvers = {
 
 const mutationTypeDefs = gql`
   extend type Mutation {
-    createLink(details: CreateLinkInput!): StatusDataErrorString!
+    createLink(details: UserLinkCreateInput!): StatusDataErrorString!
     deleteLink(linkId: String!): StatusDataErrorString!
-    updateLink(linkId: String!, details: UpdateLinkInput!): StatusDataErrorString!
+    updateLink(linkId: String!, details: UserLinkUpdateInput!): StatusDataErrorString!
   }
 `;
 

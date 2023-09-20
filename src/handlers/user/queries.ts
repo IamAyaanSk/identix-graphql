@@ -3,14 +3,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { QueryResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 import { JWT_SECRET_KEY } from '../../constants/global.js';
-import { errorMap } from '../../constants/errorMap.js';
+import { internalErrorMap } from '../../constants/internalErrorMap.js';
 
 const queries: QueryResolvers = {
-  login: async (_, { email, password }, { prisma }) => {
+  login: async (_, { details }, { prisma }) => {
     // Check if user exists
     const findUser = await prisma.user.findFirst({
       where: {
-        email,
+        email: details.email,
       },
     });
 
@@ -18,18 +18,18 @@ const queries: QueryResolvers = {
     if (!findUser) {
       return {
         status: ReturnStatus.Error,
-        error: errorMap['user/notAuthorize'],
+        error: internalErrorMap['user/notAuthorize'],
       };
     }
 
     // Check password if user Exists
-    const pwdCheck = await bcrypt.compare(password, findUser.password);
+    const pwdCheck = await bcrypt.compare(details.password, findUser.password);
 
     // If password not matched return error
     if (!pwdCheck) {
       return {
         status: ReturnStatus.Error,
-        data: errorMap['user/notAuthorize'],
+        data: internalErrorMap['user/notAuthorize'],
       };
     }
 
@@ -46,7 +46,7 @@ const queries: QueryResolvers = {
 
 const queryTypeDefs = gql`
   extend type Query {
-    login(email: String!, password: String!): StatusDataErrorString!
+    login(details: UserLoginInput!): StatusDataErrorString!
   }
 `;
 

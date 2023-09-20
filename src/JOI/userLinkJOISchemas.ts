@@ -1,6 +1,7 @@
+import { UserLinkCreateInput, UserLinkUpdateInput } from 'generated/resolvers-types';
 import Joi from 'joi';
 
-const createUserLinkSchema = Joi.object({
+const JOIcreateUserLinkSchema = Joi.object<UserLinkCreateInput>({
   firstName: Joi.string().required().max(10).message('Firstname not valid'),
   lastName: Joi.string().required().max(10).message('Lastname not valid'),
   email: Joi.string().required().email().message('Email not valid'),
@@ -30,7 +31,7 @@ const createUserLinkSchema = Joi.object({
     .message('Please enter a 10 digit phone number'),
 });
 
-const updateUserLink = Joi.object({
+const JOIUpdateUserLinkSchema = Joi.object<UserLinkUpdateInput>({
   firstName: Joi.string().max(10).message('Firstname not valid'),
   lastName: Joi.string().max(10).message('Lastname not valid'),
   email: Joi.string().email().message('Email not valid'),
@@ -60,4 +61,4 @@ const updateUserLink = Joi.object({
     .message('Please enter a 10 digit phone number'),
 });
 
-export { createUserLinkSchema, updateUserLink };
+export { JOIcreateUserLinkSchema, JOIUpdateUserLinkSchema };
