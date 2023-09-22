@@ -13,7 +13,7 @@ const types = gql`
     linkedInURL: String
     websiteURL: String
 
-    phoneNUM: String
+    phoneURL: String
   }
 
   input UserLinkUpdateInput {
@@ -28,23 +28,23 @@ const types = gql`
     linkedInURL: String
     websiteURL: String
 
-    phoneNUM: String
+    phoneURL: String
   }
 
   type UserLink {
-    linkId: String!
+    id: String!
     userId: String!
     createdAt: Int!
     updatedAt: Int!
     firstName: String!
     lastName: String!
     email: String!
-    facebook: String
-    instagram: String
-    twitter: String
-    linkedIn: String
-    website: String
-    phone: String
+    facebookURL: String
+    instagramURL: String
+    twitterURL: String
+    linkedInURL: String
+    websiteURL: String
+    phoneURL: String
   }
 
   type StatusDataErrorUserLinks {

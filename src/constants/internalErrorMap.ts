@@ -11,11 +11,13 @@ type ErrorMapKey =
   | 'link/failUpdate'
   | 'link/notDeleted'
   | 'link/notFetched'
-  | 'server/failComplete';
+  | 'server/failComplete'
+  | 'auth/samePassword';
 
 const internalErrorMap: Record<ErrorMapKey, string> = {
   'auth/unauthorized': 'You are not authorized to perform this action',
   'auth/unauthenticated': 'You are not authenticated',
+  'auth/samePassword': 'You cannot set your new password same as old password',
   'user/notAuthorize': 'Unable to authorize. Please check username/password combination',
   'user/alreadyExists': 'Email already registered',
   'user/failCreate': 'Registration failed',

@@ -7,11 +7,10 @@ import AWS from 'aws-sdk';
 import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 import { internalErrorMap } from '../../constants/internalErrorMap.js';
 import { JOIcreateUserSchema, JOIrequestPasswordResetSchema } from '../../joi/userJOISchemas.js';
-import { getPasswordResetSecret } from 'utils/getPasswordResetSecret.js';
-import { getDecodedJWT } from 'utils/getDecodedJWT.js';
-import { SENDERS_EMAIL_ADDRESS } from '../../constants/global.js';
-
-let passwordResetSecret: string;
+import { checkPasswordResetSecret, getPasswordResetSecret } from '../../utils/getPasswordResetSecret.js';
+import { getDecodedJWT } from '../../utils/getDecodedJWT.js';
+import { JWT_SECRET_KEY, SES_SENDERS_EMAIL_ADDRESS } from '../../constants/global.js';
+import { SES_CLIENT } from '../../constants/sesClient.js';
 
 const mutations: MutationResolvers = {
   register: async (_, { details }, { prisma }) => {
@@ -135,19 +134,19 @@ const mutations: MutationResolvers = {
       }
 
       // If user found generate token
-      passwordResetSecret = getPasswordResetSecret(foundUser);
+      const passwordResetSecret = await getPasswordResetSecret(foundUser);
 
-      const resetToken = jwt.sign({ userId: foundUser.id, email: foundUser.email }, passwordResetSecret, {
-        expiresIn: '1h',
-      });
+      const resetToken = jwt.sign(
+        { userId: foundUser.id, email: foundUser.email, passwordResetSecret },
+        JWT_SECRET_KEY,
+        {
+          expiresIn: '1h',
+        },
+      );
 
-      // Send email to user
-
-      AWS.config.update({ region: 'ap-south-1' });
-      const ses = new AWS.SES();
-
-      const UserResetEmailParams = {
-        Source: SENDERS_EMAIL_ADDRESS,
+      // // Send email to user
+      const UserResetEmailParams: AWS.SES.Types.SendTemplatedEmailRequest = {
+        Source: SES_SENDERS_EMAIL_ADDRESS,
         Destination: {
           ToAddresses: [foundUser.email],
         },
@@ -155,7 +154,7 @@ const mutations: MutationResolvers = {
         TemplateData: JSON.stringify({ username: foundUser.username, token: resetToken }),
       };
 
-      const sent = ses.sendTemplatedEmail(UserResetEmailParams);
+      const sent = SES_CLIENT.sendTemplatedEmail(UserResetEmailParams);
 
       // Return error if failed to sent email
       if (sent instanceof Error) {
@@ -187,13 +186,46 @@ const mutations: MutationResolvers = {
 
   resetPassword: async (_, { details }, { prisma }) => {
     // Verify jwt token with secret
-    const decodedJWT = getDecodedJWT(details.token, passwordResetSecret) || null;
+    const decodedJWT = getDecodedJWT(details.token, JWT_SECRET_KEY) || null;
 
     // If not verified return error
     if (!decodedJWT) {
       return {
         status: ReturnStatus.Error,
         error: internalErrorMap['user/failPasswordReset'],
+      };
+    }
+
+    // Search user with email in db
+    const foundUser = await prisma.user.findFirst({
+      where: {
+        email: decodedJWT.email,
+      },
+    });
+
+    // If user not found return error
+    if (!foundUser) {
+      return {
+        status: ReturnStatus.Error,
+        error: internalErrorMap['user/notFound'],
+      };
+    }
+
+    const isValidToken = await checkPasswordResetSecret(foundUser, decodedJWT.passwordResetSecret || '');
+
+    if (!isValidToken) {
+      return {
+        status: ReturnStatus.Error,
+        error: internalErrorMap['user/failPasswordReset'],
+      };
+    }
+
+    const isOldPassowrd = await bcrypt.compare(details.password, foundUser.password);
+
+    if (isOldPassowrd) {
+      return {
+        status: ReturnStatus.Error,
+        error: internalErrorMap['auth/samePassword'],
       };
     }
 

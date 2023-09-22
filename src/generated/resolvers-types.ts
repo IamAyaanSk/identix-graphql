@@ -106,17 +106,17 @@ export type UserLink = {
   __typename?: 'UserLink';
   createdAt: Scalars['Int']['output'];
   email: Scalars['String']['output'];
-  facebook?: Maybe<Scalars['String']['output']>;
+  facebookURL?: Maybe<Scalars['String']['output']>;
   firstName: Scalars['String']['output'];
-  instagram?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  instagramURL?: Maybe<Scalars['String']['output']>;
   lastName: Scalars['String']['output'];
-  linkId: Scalars['String']['output'];
-  linkedIn?: Maybe<Scalars['String']['output']>;
-  phone?: Maybe<Scalars['String']['output']>;
-  twitter?: Maybe<Scalars['String']['output']>;
+  linkedInURL?: Maybe<Scalars['String']['output']>;
+  phoneURL?: Maybe<Scalars['String']['output']>;
+  twitterURL?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['Int']['output'];
   userId: Scalars['String']['output'];
-  website?: Maybe<Scalars['String']['output']>;
+  websiteURL?: Maybe<Scalars['String']['output']>;
 };
 
 export type UserLinkCreateInput = {
@@ -126,7 +126,7 @@ export type UserLinkCreateInput = {
   instagramURL?: InputMaybe<Scalars['String']['input']>;
   lastName: Scalars['String']['input'];
   linkedInURL?: InputMaybe<Scalars['String']['input']>;
-  phoneNUM?: InputMaybe<Scalars['String']['input']>;
+  phoneURL?: InputMaybe<Scalars['String']['input']>;
   twitterURL?: InputMaybe<Scalars['String']['input']>;
   websiteURL?: InputMaybe<Scalars['String']['input']>;
 };
@@ -138,7 +138,7 @@ export type UserLinkUpdateInput = {
   instagramURL?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   linkedInURL?: InputMaybe<Scalars['String']['input']>;
-  phoneNUM?: InputMaybe<Scalars['String']['input']>;
+  phoneURL?: InputMaybe<Scalars['String']['input']>;
   twitterURL?: InputMaybe<Scalars['String']['input']>;
   websiteURL?: InputMaybe<Scalars['String']['input']>;
 };
@@ -314,17 +314,17 @@ export type StatusDataErrorUserLinksResolvers<ContextType = CustomApolloContext,
 export type UserLinkResolvers<ContextType = CustomApolloContext, ParentType extends ResolversParentTypes['UserLink'] = ResolversParentTypes['UserLink']> = ResolversObject<{
   createdAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  facebook?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  facebookURL?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  instagram?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  instagramURL?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  linkId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  linkedIn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  twitter?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  linkedInURL?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  phoneURL?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  twitterURL?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  websiteURL?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

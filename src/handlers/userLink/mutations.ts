@@ -24,12 +24,12 @@ const mutations: MutationResolvers = {
           firstName: details.firstName,
           lastName: details.lastName,
           email: details.email,
-          facebook: details.facebookURL,
-          instagram: details.instagramURL,
-          twitter: details.twitterURL,
-          linkedIn: details.linkedInURL,
-          website: details.websiteURL,
-          phone: details.phoneNUM,
+          facebookURL: details.facebookURL,
+          instagramURL: details.instagramURL,
+          twitterURL: details.twitterURL,
+          linkedInURL: details.linkedInURL,
+          websiteURL: details.websiteURL,
+          phoneURL: details.phoneURL,
         },
       });
 
@@ -73,7 +73,7 @@ const mutations: MutationResolvers = {
     // Find link to delete
     const deleteLink = await prisma.userLink.delete({
       where: {
-        linkId,
+        id: linkId,
       },
     });
 
@@ -107,18 +107,18 @@ const mutations: MutationResolvers = {
       // Find link to update
       const updateLink = await prisma.userLink.update({
         where: {
-          linkId,
+          id: linkId,
         },
         data: {
           firstName: details.firstName || undefined,
           lastName: details.lastName || undefined,
           email: details.email || undefined,
-          facebook: details.facebookURL || undefined,
-          instagram: details.instagramURL || undefined,
-          twitter: details.twitterURL || undefined,
-          linkedIn: details.linkedInURL || undefined,
-          website: details.websiteURL || undefined,
-          phone: details.phoneNUM || undefined,
+          facebookURL: details.facebookURL || undefined,
+          instagramURL: details.instagramURL || undefined,
+          twitterURL: details.twitterURL || undefined,
+          linkedInURL: details.linkedInURL || undefined,
+          websiteURL: details.websiteURL || undefined,
+          phoneURL: details.phoneURL || undefined,
         },
       });
 

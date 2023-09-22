@@ -1,12 +1,7 @@
 import AWS from 'aws-sdk';
+import { SES_CLIENT } from '../constants/sesClient.js';
 
-AWS.config.update({
-  region: 'ap-south-1',
-});
-
-const ses = new AWS.SES();
-
-const params = {
+const params: AWS.SES.CreateTemplateRequest = {
   Template: {
     TemplateName: 'ResetPasswordTemplate',
     SubjectPart: 'Password reset request | identix',
@@ -15,7 +10,6 @@ const params = {
   },
 };
 
-ses.createTemplate(params, (err, data) => {
-  if (err) console.log(err);
-  else console.log(data);
+SES_CLIENT.createTemplate(params, (error) => {
+  if (error) console.log(error);
 });

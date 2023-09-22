@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 
 interface MyJwtPayload {
-  id?: string | undefined;
-  email?: string | undefined;
+  id?: string;
+  email?: string;
+  passwordResetSecret?: string;
 }
 
 const getDecodedJWT = (token: string, secret: string): jwt.JwtPayload & MyJwtPayload => {

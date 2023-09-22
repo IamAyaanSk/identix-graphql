@@ -8,7 +8,7 @@ declare global {
       AWS_SECRET_ACCESS_KEY?: string;
       AWS_SESSION_TOKEN?: string;
       DOMAIN_NAME?: string;
-      SENDERS_EMAIL_ADDRESS?: string;
+      SES_SENDERS_EMAIL_ADDRESS?: string;
     }
   }
 }

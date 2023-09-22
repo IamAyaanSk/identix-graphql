@@ -26,7 +26,7 @@ const JOIcreateUserLinkSchema = Joi.object<UserLinkCreateInput>({
     .pattern(/^https?:\/\/[^\s/$.?#].[^\s]*$/, 'Website URL')
     .message('Please enter valid website URL'),
 
-  phoneNUM: Joi.string()
+  phoneURL: Joi.string()
     .pattern(/^\d{10}$/, 'Phone Number')
     .message('Please enter a 10 digit phone number'),
 });
@@ -56,7 +56,7 @@ const JOIUpdateUserLinkSchema = Joi.object<UserLinkUpdateInput>({
     .pattern(/^https?:\/\/[^\s/$.?#].[^\s]*$/, 'Website URL')
     .message('Please enter valid website URL'),
 
-  phoneNUM: Joi.string()
+  phoneURL: Joi.string()
     .pattern(/^\d{10}$/, 'Phone Number')
     .message('Please enter a 10 digit phone number'),
 });

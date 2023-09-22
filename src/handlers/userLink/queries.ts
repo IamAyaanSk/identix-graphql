@@ -53,7 +53,7 @@ const queries: QueryResolvers = {
     // Search for user link
     const userLink = await prisma.userLink.findFirst({
       where: {
-        linkId,
+        id: linkId,
       },
     });
 
