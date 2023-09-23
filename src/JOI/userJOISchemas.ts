@@ -30,7 +30,7 @@ const JOIcreateUserSchema = Joi.object<UserRegisterInput>({
     'string.alphanum': 'No special characters allowed in firstname',
   }),
 
-  lastName: Joi.string().max(10).alphanum().messages({
+  lastName: Joi.string().min(1).max(10).alphanum().messages({
     'string.base': 'Lastname should be a string',
     'string.max': 'Lastname must have atmost 10 character',
     'string.min': 'Lastname must have atleat 1 character',
