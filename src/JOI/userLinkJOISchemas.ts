@@ -2,9 +2,29 @@ import { UserLinkCreateInput, UserLinkUpdateInput } from 'generated/resolvers-ty
 import Joi from 'joi';
 
 const commonUserLinkSchemaItems = {
-  firstName: Joi.string().min(3).max(20).message('Please enter a valid fisrt name'),
-  lastName: Joi.string().max(10).message('Please enter a valid last name'),
-  email: Joi.string().email().message('Please enter a valid email'),
+  firstName: Joi.string().min(1).max(10).alphanum().messages({
+    'string.base': 'First name should be a string',
+    'string.empty': 'Firstname is required',
+    'string.max': 'Firstname must have atmost 10 character',
+    'string.min': 'Firstname must have atleat 1 character',
+    'string.alphanum': 'No special characters allowed in firstname',
+  }),
+
+  lastName: Joi.string().max(10).alphanum().messages({
+    'string.base': 'Last name should be a string',
+    'string.empty': 'Lastname is required',
+    'string.max': 'Lastname must have atmost 10 character',
+    'string.min': 'Lastname must have atleat 1 character',
+    'string.alphanum': 'No special characters allowed in lastname',
+  }),
+
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .messages({
+      'string.base': 'Email should be a string',
+      'string.empty': 'Email is required',
+      'string.email': 'Email is not valid',
+    }),
 
   facebookURL: Joi.string()
     .pattern(/^https:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9_.-]{1,30}$/, 'Facebook URL')
@@ -34,8 +54,8 @@ const commonUserLinkSchemaItems = {
 const JOIcreateUserLinkSchema = Joi.object<UserLinkCreateInput>({
   ...commonUserLinkSchemaItems,
   firstName: commonUserLinkSchemaItems.firstName.required(),
-  lastName: commonUserLinkSchemaItems.firstName.required(),
-  email: commonUserLinkSchemaItems.firstName.required(),
+  lastName: commonUserLinkSchemaItems.lastName.required(),
+  email: commonUserLinkSchemaItems.email.required(),
 });
 
 const JOIUpdateUserLinkSchema = Joi.object<UserLinkUpdateInput>({

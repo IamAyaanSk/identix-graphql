@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { QueryResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 import { dateToEpochTimestamp } from '../../utils/dateToEpochTimestamp.js';
-import { internalErrorMap } from '../../constants/internalErrorMap.js';
+import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap.js';
 
 const queries: QueryResolvers = {
   getUserLinks: async (_, {}, { prisma, userId }) => {
@@ -24,7 +24,7 @@ const queries: QueryResolvers = {
     if (!userLinks) {
       return {
         status: ReturnStatus.Error,
-        error: internalErrorMap['link/notFetched'],
+        error: internalErrorMap['userLink/failFetched'],
       };
     }
 
@@ -61,7 +61,7 @@ const queries: QueryResolvers = {
     if (!userLink) {
       return {
         status: ReturnStatus.Error,
-        error: internalErrorMap['link/notFetched'],
+        error: internalErrorMap['userLink/failFetched'],
       };
     }
 

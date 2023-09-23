@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { QueryResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 import { JWT_SECRET_KEY } from '../../constants/global.js';
-import { internalErrorMap } from '../../constants/internalErrorMap.js';
+import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap.js';
 
 const queries: QueryResolvers = {
   login: async (_, { details }, { prisma }) => {

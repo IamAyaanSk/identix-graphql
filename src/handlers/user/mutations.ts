@@ -4,13 +4,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
-import { internalErrorMap } from '../../constants/internalErrorMap.js';
+import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap.js';
 import { JOIcreateUserSchema, JOIrequestPasswordResetSchema } from '../../joi/userJOISchemas.js';
 import { checkPasswordResetSecret, getPasswordResetSecret } from '../../utils/getPasswordResetSecret.js';
 import { getDecodedJWT } from '../../utils/getDecodedJWT.js';
 import { IS_TESTING, JWT_SECRET_KEY, SES_SENDERS_EMAIL_ADDRESS } from '../../constants/global.js';
 import { SES_CLIENT } from '../../constants/sesClient.js';
 import { SendTemplatedEmailRequest } from '@aws-sdk/client-ses';
+import { internalSuccessMap } from '../../constants/errorMaps/internalSuccessMap.js';
 
 const mutations: MutationResolvers = {
   register: async (_, { details }, { prisma }) => {
@@ -50,7 +51,7 @@ const mutations: MutationResolvers = {
       if (!user) {
         return {
           status: ReturnStatus.Error,
-          error: internalErrorMap['user/failCreate'],
+          error: internalErrorMap['user/failRegister'],
         };
       }
 
@@ -65,7 +66,7 @@ const mutations: MutationResolvers = {
       // Return Success message if user registered
       return {
         status: ReturnStatus.Success,
-        data: 'User registered successfully',
+        data: internalSuccessMap['user/successRegister'],
       };
     } catch (validationError) {
       // Handle validation errors
@@ -78,7 +79,7 @@ const mutations: MutationResolvers = {
       // Handle other errors
       return {
         status: ReturnStatus.Error,
-        error: internalErrorMap['user/failCreate'],
+        error: internalErrorMap['server/failComplete'],
       };
     }
   },
@@ -118,7 +119,7 @@ const mutations: MutationResolvers = {
     // Return success message
     return {
       status: ReturnStatus.Success,
-      data: 'User deleted successsfully',
+      data: internalSuccessMap['user/successDelete'],
     };
   },
 
@@ -144,13 +145,9 @@ const mutations: MutationResolvers = {
       // If user found generate token
       const passwordResetSecret = await getPasswordResetSecret(foundUser);
 
-      const resetToken = jwt.sign(
-        { userId: foundUser.id, email: foundUser.email, passwordResetSecret },
-        JWT_SECRET_KEY,
-        {
-          expiresIn: '1h',
-        },
-      );
+      const resetToken = jwt.sign({ id: foundUser.id, email: foundUser.email, passwordResetSecret }, JWT_SECRET_KEY, {
+        expiresIn: '1h',
+      });
 
       // // Send email to user
       const UserResetEmailParams: SendTemplatedEmailRequest = {
@@ -175,7 +172,7 @@ const mutations: MutationResolvers = {
       // Return success message
       return {
         status: ReturnStatus.Success,
-        data: 'Please find password reset instructions on your registered email address',
+        data: internalSuccessMap['user/successPasswordResetRequest'],
       };
     } catch (validationError) {
       if (validationError instanceof Error) {
@@ -207,7 +204,7 @@ const mutations: MutationResolvers = {
     // Search user with email in db
     const foundUser = await prisma.user.findFirst({
       where: {
-        email: decodedJWT.email,
+        id: decodedJWT.id,
       },
     });
 
@@ -242,7 +239,7 @@ const mutations: MutationResolvers = {
 
     const updatePassword = await prisma.user.update({
       where: {
-        email: decodedJWT.email,
+        id: decodedJWT.id,
       },
       data: {
         password: newPassword,
@@ -260,7 +257,7 @@ const mutations: MutationResolvers = {
     // Return success message
     return {
       status: ReturnStatus.Success,
-      data: `Password changed successfully`,
+      data: internalSuccessMap['user/successPasswordReset'],
     };
   },
 };
