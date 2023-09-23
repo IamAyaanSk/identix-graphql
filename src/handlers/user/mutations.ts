@@ -26,7 +26,7 @@ const mutations: MutationResolvers = {
         },
       });
 
-      // If user found and input email and found email is same return email exist error
+      // If user is found and input email and found email is same return email exist error
       if (findUser !== null) {
         if (findUser?.email === details.email) {
           return {
@@ -36,7 +36,7 @@ const mutations: MutationResolvers = {
         }
       }
 
-      // If user found and input username and found username is same return username exist error
+      // If user is found and input username and found username is same return username exist error
       if (findUser !== null) {
         if (findUser?.username === details.username) {
           return {
