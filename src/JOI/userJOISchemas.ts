@@ -20,7 +20,7 @@ const JOIcreateUserSchema = Joi.object<UserRegisterInput>({
   password: Joi.string().required().min(8).max(25).messages({
     'string.base': 'Password should be a string',
     'string.empty': 'Password is required',
-    'string.min': 'Password must have atleast 10 characters',
+    'string.min': 'Password must have atleast 8 characters',
     'string.max': 'Password must have atmost 25 characters',
   }),
   firstName: Joi.string().min(1).max(10).alphanum().messages({

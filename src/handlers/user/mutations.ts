@@ -21,17 +21,29 @@ const mutations: MutationResolvers = {
       // Check if user already exists
       const findUser = await prisma.user.findFirst({
         where: {
-          email: details.email,
+          OR: [{ email: details.email }, { username: { equals: details.username, not: null } }],
           isDeleted: false,
         },
       });
 
-      // If user exists return user already exists error
-      if (findUser) {
-        return {
-          status: ReturnStatus.Error,
-          error: internalErrorMap['user/alreadyExists'],
-        };
+      // If user found and input email and found email is same return email exist error
+      if (findUser !== null) {
+        if (findUser?.email === details.email) {
+          return {
+            status: ReturnStatus.Error,
+            error: internalErrorMap['user/emailAlreadyExists'],
+          };
+        }
+      }
+
+      // If user found and input username and found username is same return username exist error
+      if (findUser !== null) {
+        if (findUser?.username === details.username) {
+          return {
+            status: ReturnStatus.Error,
+            error: internalErrorMap['user/usernameAlreadyExists'],
+          };
+        }
       }
 
       // Create a hashed password if new user
