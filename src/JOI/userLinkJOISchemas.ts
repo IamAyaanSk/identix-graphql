@@ -10,7 +10,7 @@ const commonUserLinkSchemaItems = {
     'string.alphanum': 'No special characters allowed in firstname',
   }),
 
-  lastName: Joi.string().max(10).alphanum().messages({
+  lastName: Joi.string().min(1).max(10).alphanum().messages({
     'string.base': 'Last name should be a string',
     'string.empty': 'Lastname is required',
     'string.max': 'Lastname must have atmost 10 character',
