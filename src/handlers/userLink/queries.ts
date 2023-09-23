@@ -17,6 +17,7 @@ const queries: QueryResolvers = {
     const userLinks = await prisma.userLink.findMany({
       where: {
         userId,
+        isDeleted: false,
       },
     });
 
@@ -54,6 +55,7 @@ const queries: QueryResolvers = {
     const userLink = await prisma.userLink.findFirst({
       where: {
         id: linkId,
+        isDeleted: false,
       },
     });
 

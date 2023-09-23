@@ -72,9 +72,13 @@ const mutations: MutationResolvers = {
     }
 
     // Find link to delete
-    const deleteLink = await prisma.userLink.delete({
+    const deleteLink = await prisma.userLink.update({
       where: {
         id: linkId,
+      },
+
+      data: {
+        isDeleted: true,
       },
     });
 

@@ -11,6 +11,7 @@ const queries: QueryResolvers = {
     const findUser = await prisma.user.findFirst({
       where: {
         email: details.email,
+        isDeleted: false,
       },
     });
 

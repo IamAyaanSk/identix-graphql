@@ -22,6 +22,7 @@ const mutations: MutationResolvers = {
       const findUser = await prisma.user.findFirst({
         where: {
           email: details.email,
+          isDeleted: false,
         },
       });
 
@@ -94,15 +95,24 @@ const mutations: MutationResolvers = {
     }
 
     // Delete user and his links
-    const deleteLinks = prisma.userLink.deleteMany({
+    const deleteLinks = prisma.userLink.updateMany({
       where: {
         userId,
+        isDeleted: false,
+      },
+      data: {
+        isDeleted: true,
       },
     });
 
-    const deleteUser = prisma.user.delete({
+    const deleteUser = prisma.user.update({
       where: {
         id: userId,
+        isDeleted: false,
+      },
+
+      data: {
+        isDeleted: true,
       },
     });
 
@@ -131,6 +141,7 @@ const mutations: MutationResolvers = {
       const foundUser = await prisma.user.findFirst({
         where: {
           email: details.email,
+          isDeleted: false,
         },
       });
 
