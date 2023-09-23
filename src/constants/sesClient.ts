@@ -1,7 +1,5 @@
-import AWS from 'aws-sdk';
+import { SES } from '@aws-sdk/client-ses';
 
-AWS.config.update({ region: 'ap-south-1' });
-
-const SES_CLIENT = new AWS.SES();
+const SES_CLIENT = new SES({ region: 'ap-south-1' });
 
 export { SES_CLIENT };

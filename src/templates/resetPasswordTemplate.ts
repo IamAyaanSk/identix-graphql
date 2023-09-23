@@ -1,7 +1,7 @@
-import AWS from 'aws-sdk';
+import { CreateTemplateRequest } from '@aws-sdk/client-ses';
 import { SES_CLIENT } from '../constants/sesClient.js';
 
-const params: AWS.SES.CreateTemplateRequest = {
+const params: CreateTemplateRequest = {
   Template: {
     TemplateName: 'ResetPasswordTemplate',
     SubjectPart: 'Password reset request | identix',

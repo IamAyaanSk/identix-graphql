@@ -16,7 +16,6 @@ import { getDecodedJWT } from './utils/getDecodedJWT.js';
 export interface CustomApolloContext {
   prisma: PrismaClient;
   userId: string | null;
-  token: string;
 }
 
 const prisma = new PrismaClient();
@@ -41,7 +40,7 @@ app.use(
       const token: string = req.headers.authorization || '';
       const decodedJWT = getDecodedJWT(token, JWT_SECRET_KEY);
 
-      return { prisma, userId: decodedJWT.id || null, token };
+      return { prisma, userId: decodedJWT.id || null };
     },
   }),
 );

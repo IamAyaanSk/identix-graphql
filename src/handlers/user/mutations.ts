@@ -2,15 +2,15 @@ import gql from 'graphql-tag';
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import AWS from 'aws-sdk';
 
 import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 import { internalErrorMap } from '../../constants/internalErrorMap.js';
 import { JOIcreateUserSchema, JOIrequestPasswordResetSchema } from '../../joi/userJOISchemas.js';
 import { checkPasswordResetSecret, getPasswordResetSecret } from '../../utils/getPasswordResetSecret.js';
 import { getDecodedJWT } from '../../utils/getDecodedJWT.js';
-import { JWT_SECRET_KEY, SES_SENDERS_EMAIL_ADDRESS } from '../../constants/global.js';
+import { IS_TESTING, JWT_SECRET_KEY, SES_SENDERS_EMAIL_ADDRESS } from '../../constants/global.js';
 import { SES_CLIENT } from '../../constants/sesClient.js';
+import { SendTemplatedEmailRequest } from '@aws-sdk/client-ses';
 
 const mutations: MutationResolvers = {
   register: async (_, { details }, { prisma }) => {
@@ -52,6 +52,14 @@ const mutations: MutationResolvers = {
           status: ReturnStatus.Error,
           error: internalErrorMap['user/failCreate'],
         };
+      }
+
+      if (IS_TESTING && details.username?.endsWith('-delete')) {
+        await prisma.user.delete({
+          where: {
+            email: details.email,
+          },
+        });
       }
 
       // Return Success message if user registered
@@ -145,7 +153,7 @@ const mutations: MutationResolvers = {
       );
 
       // // Send email to user
-      const UserResetEmailParams: AWS.SES.Types.SendTemplatedEmailRequest = {
+      const UserResetEmailParams: SendTemplatedEmailRequest = {
         Source: SES_SENDERS_EMAIL_ADDRESS,
         Destination: {
           ToAddresses: [foundUser.email],

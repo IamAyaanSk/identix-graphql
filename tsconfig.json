@@ -8,11 +8,11 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
     "strict": true,
     "baseUrl": "./src",
     "noImplicitAny": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/__tests__/**"]
 }

@@ -3,4 +3,6 @@ const DATABASE_URL: string = process.env.DATABASE_URL || '';
 const JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY || '';
 const SES_SENDERS_EMAIL_ADDRESS: string = process.env.SES_SENDERS_EMAIL_ADDRESS || '';
 
-export { PORT, DATABASE_URL, JWT_SECRET_KEY, SES_SENDERS_EMAIL_ADDRESS };
+const IS_TESTING = process.env.NODE_ENV || false;
+
+export { PORT, DATABASE_URL, JWT_SECRET_KEY, SES_SENDERS_EMAIL_ADDRESS, IS_TESTING };

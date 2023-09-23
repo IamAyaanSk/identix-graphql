@@ -1,64 +1,45 @@
 import { UserLinkCreateInput, UserLinkUpdateInput } from 'generated/resolvers-types';
 import Joi from 'joi';
 
-const JOIcreateUserLinkSchema = Joi.object<UserLinkCreateInput>({
-  firstName: Joi.string().required().max(10).message('Firstname not valid'),
-  lastName: Joi.string().required().max(10).message('Lastname not valid'),
-  email: Joi.string().required().email().message('Email not valid'),
+const commonUserLinkSchemaItems = {
+  firstName: Joi.string().min(3).max(20).message('Please enter a valid fisrt name'),
+  lastName: Joi.string().max(10).message('Please enter a valid last name'),
+  email: Joi.string().email().message('Please enter a valid email'),
 
   facebookURL: Joi.string()
-    .pattern(/^https:\/\/www\.facebook\.com\/[a-zA-Z0-9_.-]+\/?$/, 'Facebook URL')
+    .pattern(/^https:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9_.-]{1,30}$/, 'Facebook URL')
     .message('Please enter valid facebook URL'),
 
   instagramURL: Joi.string()
-    .pattern(/^https:\/\/www\.instagram\.com\/[a-zA-Z0-9_.-]+\/?$/, 'Instagram URL')
+    .pattern(/^https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.-]{1,30}$/, 'Instagram URL')
     .message('Please enter valid instagram URL'),
 
   twitterURL: Joi.string()
-    .pattern(/^https:\/\/www\.twitter\.com\/[a-zA-Z0-9_.-]+\/?$/, 'Twitter URL')
-    .message('Please enter valid twitter URL'),
+    .pattern(/^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_.-]{1,20}$/, 'Twitter URL')
+    .message('Please enter valid twitter/x URL'),
 
   linkedInURL: Joi.string()
-    .pattern(/^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_.-]+\/?$/, 'LinkedIn URL')
+    .pattern(/^https:\/\/(www\.)?linkedin\.com\/[a-zA-Z]{2}\/[a-zA-Z0-9_.-]{1,30}$/, 'LinkedIn URL')
     .message('Please enter valid linkedin URL'),
 
   websiteURL: Joi.string()
-    .pattern(/^https?:\/\/[^\s/$.?#].[^\s]*$/, 'Website URL')
+    .pattern(/^https?:\/\/[\w\-.]+(\.[a-z]{2,63}){1,2}\/?.*$/, 'Website URL')
     .message('Please enter valid website URL'),
 
   phoneURL: Joi.string()
-    .pattern(/^\d{10}$/, 'Phone Number')
+    .pattern(/^tel:[+]?\d{1,15}$/, 'Phone Number')
     .message('Please enter a 10 digit phone number'),
+};
+
+const JOIcreateUserLinkSchema = Joi.object<UserLinkCreateInput>({
+  ...commonUserLinkSchemaItems,
+  firstName: commonUserLinkSchemaItems.firstName.required(),
+  lastName: commonUserLinkSchemaItems.firstName.required(),
+  email: commonUserLinkSchemaItems.firstName.required(),
 });
 
 const JOIUpdateUserLinkSchema = Joi.object<UserLinkUpdateInput>({
-  firstName: Joi.string().max(10).message('Firstname not valid'),
-  lastName: Joi.string().max(10).message('Lastname not valid'),
-  email: Joi.string().email().message('Email not valid'),
-
-  facebookURL: Joi.string()
-    .pattern(/^https:\/\/www\.facebook\.com\/[a-zA-Z0-9_.-]+\/?$/, 'Facebook URL')
-    .message('Please enter valid facebook URL'),
-
-  instagramURL: Joi.string()
-    .pattern(/^https:\/\/www\.instagram\.com\/[a-zA-Z0-9_.-]+\/?$/, 'Instagram URL')
-    .message('Please enter valid instagram URL'),
-
-  twitterURL: Joi.string()
-    .pattern(/^https:\/\/www\.twitter\.com\/[a-zA-Z0-9_.-]+\/?$/, 'Twitter URL')
-    .message('Please enter valid twitter URL'),
-
-  linkedInURL: Joi.string()
-    .pattern(/^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_.-]+\/?$/, 'LinkedIn URL')
-    .message('Please enter valid linkedin URL'),
-
-  websiteURL: Joi.string()
-    .pattern(/^https?:\/\/[^\s/$.?#].[^\s]*$/, 'Website URL')
-    .message('Please enter valid website URL'),
-
-  phoneURL: Joi.string()
-    .pattern(/^\d{10}$/, 'Phone Number')
-    .message('Please enter a 10 digit phone number'),
+  ...commonUserLinkSchemaItems,
 });
 
 export { JOIcreateUserLinkSchema, JOIUpdateUserLinkSchema };
