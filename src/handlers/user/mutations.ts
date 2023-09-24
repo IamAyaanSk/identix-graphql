@@ -26,19 +26,14 @@ const mutations: MutationResolvers = {
         },
       });
 
-      // If user is found and input email and found email is same return email exist error
+      // If user is found and input email or username and found email or username is same return email exist error
       if (findUser !== null) {
-        if (findUser?.email === details.email) {
+        if (findUser.email === details.email) {
           return {
             status: ReturnStatus.Error,
             error: internalErrorMap['user/emailAlreadyExists'],
           };
-        }
-      }
-
-      // If user is found and input username and found username is same return username exist error
-      if (findUser !== null) {
-        if (findUser?.username === details.username) {
+        } else if (findUser.username === details.username) {
           return {
             status: ReturnStatus.Error,
             error: internalErrorMap['user/usernameAlreadyExists'],

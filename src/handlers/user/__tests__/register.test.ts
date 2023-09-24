@@ -64,5 +64,5 @@ it('register existing user', async () => {
   console.log(response.body.singleResult.data);
 
   expect(response.body.singleResult.data?.register.status).toBe(ReturnStatus.Error);
-  expect(response.body.singleResult.data?.register.error).toBe(internalErrorMap['user/alreadyExists']);
+  expect(response.body.singleResult.data?.register.error).toBe(internalErrorMap['user/emailAlreadyExists']);
 });
