@@ -64,7 +64,8 @@ const mutations: MutationResolvers = {
       }
 
       if (IS_TESTING && details.username?.endsWith('-delete')) {
-        await prisma.user.delete({
+        await prisma.user.deleteMany({
+          // Since delete needs a unique field
           where: {
             email: details.email,
           },
