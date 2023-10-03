@@ -12,6 +12,7 @@ type ErrorMapKey =
   | 'userLink/failUpdate'
   | 'userLink/failDeleted'
   | 'userLink/failFetched'
+  | 'user/invalidToken'
   | 'server/failComplete'
   | 'auth/samePassword';
 
@@ -30,6 +31,7 @@ const internalErrorMap: Record<ErrorMapKey, string> = {
   'userLink/failUpdate': 'Failed to update link',
   'userLink/failDeleted': 'Unable to delete link',
   'userLink/failFetched': 'Unable to fetch links',
+  'user/invalidToken': 'Expired or Invalid Token',
   'server/failComplete': 'Something went wrong, please try again later',
 };
 

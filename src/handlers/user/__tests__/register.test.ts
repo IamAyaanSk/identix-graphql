@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { testApolloServer, testPrismaClient } from '../../../constants/testServerClients';
+import { testApolloServer, testPrismaClient, testRedisClient } from '../../../constants/testServerClients';
 import { ReturnStatus, StatusDataErrorStringResolvers } from '../../../generated/resolvers-types';
 import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap';
 import { internalSuccessMap } from '../../../constants/errorMaps/internalSuccessMap';
@@ -25,6 +25,7 @@ const getRegisterMutationParams = (isForNewUser: boolean) => {
     {
       contextValue: {
         prisma: testPrismaClient,
+        redis: testRedisClient,
         userId: isForNewUser ? null : '3ce1d440-319e-4596-bd15-be9acebd03c7',
       },
     },

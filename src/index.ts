@@ -9,13 +9,19 @@ import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { PrismaClient } from '@prisma/client';
+import { redis } from './constants/redisClient.js';
 import { schema } from './handlers/index.js';
-import { JWT_SECRET_KEY, PORT } from './constants/global.js';
+import { JWT_ACCESS_SECRET_KEY, PORT } from './constants/global.js';
 import { getDecodedJWT } from './utils/getDecodedJWT.js';
+import { Redis } from 'ioredis';
+import cookieParser from 'cookie-parser';
 
 export interface CustomApolloContext {
   prisma: PrismaClient;
+  redis: Redis;
   userId: string | null;
+  req?: express.Request;
+  res?: express.Response;
 }
 
 const prisma = new PrismaClient();
@@ -33,14 +39,18 @@ await server.start();
 
 app.use(
   '/graphql',
-  cors<cors.CorsRequest>(),
+  cors<cors.CorsRequest>({
+    origin: ['https://sandbox.embed.apollographql.com'],
+    credentials: true,
+  }),
   bodyParser.json(),
+  cookieParser(),
   expressMiddleware(server, {
-    context: async ({ req }) => {
-      const token: string = req.headers.authorization || '';
-      const decodedJWT = getDecodedJWT(token, JWT_SECRET_KEY);
+    context: async ({ req, res }) => {
+      const token: string = req.headers.authorization?.split(' ')[1] || '';
+      const decodedJWT = getDecodedJWT(token, JWT_ACCESS_SECRET_KEY);
 
-      return { prisma, userId: decodedJWT.id || null };
+      return { prisma, redis, userId: decodedJWT.id || null, req, res };
     },
   }),
 );

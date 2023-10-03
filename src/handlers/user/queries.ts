@@ -1,12 +1,12 @@
 import gql from 'graphql-tag';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { QueryResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
-import { JWT_SECRET_KEY } from '../../constants/global.js';
 import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap.js';
+import { signJWTToken } from '../../utils/signJWTToken.js';
+import { JWT_REFRESH_COOKIE_EXPIRES_IN } from '../../constants/global.js';
 
 const queries: QueryResolvers = {
-  login: async (_, { details }, { prisma }) => {
+  login: async (_, { details }, { prisma, res }) => {
     // Check if user exists
     const findUser = await prisma.user.findFirst({
       where: {
@@ -35,12 +35,24 @@ const queries: QueryResolvers = {
     }
 
     // Create jwt token if user verified
-    const token = jwt.sign({ id: findUser.id }, JWT_SECRET_KEY, { expiresIn: '10m' });
+    const accessJWTToken = signJWTToken(findUser.id);
+
+    // Create refresh token
+    const refreshJWTToken = signJWTToken(findUser.id, true);
+
+    // Return refresh token in a cookie
+    res?.cookie('refreshToken', refreshJWTToken, {
+      httpOnly: true,
+      secure: true, //process.env.NODE_ENV === 'production', // set true at time of production
+      maxAge: JWT_REFRESH_COOKIE_EXPIRES_IN,
+      sameSite: 'none',
+    });
 
     // Return success message
+
     return {
       status: ReturnStatus.Success,
-      data: token,
+      data: accessJWTToken,
     };
   },
 };
