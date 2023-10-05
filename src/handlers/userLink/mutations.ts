@@ -1,8 +1,9 @@
 import gql from 'graphql-tag';
 
 import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
-import { internalErrorMap } from '../../constants/internalErrorMap.js';
+import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap.js';
 import { JOIcreateUserLinkSchema, JOIUpdateUserLinkSchema } from '../../joi/userLinkJOISchemas.js';
+import { internalSuccessMap } from '../../constants/errorMaps/internalSuccessMap.js';
 
 const mutations: MutationResolvers = {
   createLink: async (_, { details }, { prisma, userId }) => {
@@ -37,14 +38,14 @@ const mutations: MutationResolvers = {
       if (!userLink) {
         return {
           status: ReturnStatus.Error,
-          error: internalErrorMap['link/failCreate'],
+          error: internalErrorMap['userLink/failCreate'],
         };
       }
 
       // If link created return successs message
       return {
         status: ReturnStatus.Success,
-        data: 'UserLink Created Successfully',
+        data: internalSuccessMap['userLink/successCreate'],
       };
     } catch (validationError) {
       if (validationError instanceof Error) {
@@ -56,7 +57,7 @@ const mutations: MutationResolvers = {
 
       return {
         status: ReturnStatus.Error,
-        error: internalErrorMap['link/failCreate'],
+        error: internalErrorMap['server/failComplete'],
       };
     }
   },
@@ -71,9 +72,13 @@ const mutations: MutationResolvers = {
     }
 
     // Find link to delete
-    const deleteLink = await prisma.userLink.delete({
+    const deleteLink = await prisma.userLink.update({
       where: {
         id: linkId,
+      },
+
+      data: {
+        isDeleted: true,
       },
     });
 
@@ -81,14 +86,14 @@ const mutations: MutationResolvers = {
     if (!deleteLink) {
       return {
         status: ReturnStatus.Error,
-        error: internalErrorMap['link/notDeleted'],
+        error: internalErrorMap['userLink/failDeleted'],
       };
     }
 
     // Else return success message
     return {
       status: ReturnStatus.Success,
-      data: 'UserLink deleted successfully',
+      data: internalSuccessMap['userLink/successDelete'],
     };
   },
 
@@ -126,14 +131,14 @@ const mutations: MutationResolvers = {
       if (!updateLink) {
         return {
           status: ReturnStatus.Error,
-          error: internalErrorMap['link/failUpdate'],
+          error: internalErrorMap['userLink/failUpdate'],
         };
       }
 
       // Else return success message
       return {
         status: ReturnStatus.Success,
-        data: 'UserLink updated successfully',
+        data: internalSuccessMap['userLink/successUpdate'],
       };
     } catch (error) {
       if (error instanceof Error) {
@@ -145,7 +150,7 @@ const mutations: MutationResolvers = {
 
       return {
         status: ReturnStatus.Error,
-        error: internalErrorMap['user/failCreate'],
+        error: internalErrorMap['server/failComplete'],
       };
     }
   },

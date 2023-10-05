@@ -1,7 +1,8 @@
 import assert from 'node:assert';
 import { testApolloServer, testPrismaClient } from '../../../constants/testServerClients';
 import { ReturnStatus, StatusDataErrorStringResolvers } from '../../../generated/resolvers-types';
-import { internalErrorMap } from '../../../constants/internalErrorMap';
+import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap';
+import { internalSuccessMap } from '../../../constants/errorMaps/internalSuccessMap';
 
 const getRegisterMutationParams = (isForNewUser: boolean) => {
   const registerMutationParams = [
@@ -46,7 +47,7 @@ it('register new user', async () => {
   console.log(response.body.singleResult.data);
 
   expect(response.body.singleResult.data?.register.status).toBe(ReturnStatus.Success);
-  expect(response.body.singleResult.data?.register.data).toBe('User registered successfully');
+  expect(response.body.singleResult.data?.register.data).toBe(internalSuccessMap['user/successRegister']);
 });
 
 it('register existing user', async () => {
@@ -63,5 +64,5 @@ it('register existing user', async () => {
   console.log(response.body.singleResult.data);
 
   expect(response.body.singleResult.data?.register.status).toBe(ReturnStatus.Error);
-  expect(response.body.singleResult.data?.register.error).toBe(internalErrorMap['user/alreadyExists']);
+  expect(response.body.singleResult.data?.register.error).toBe(internalErrorMap['user/emailAlreadyExists']);
 });
