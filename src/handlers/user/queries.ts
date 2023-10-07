@@ -35,10 +35,10 @@ const queries: QueryResolvers = {
     }
 
     // Create jwt token if user verified
-    const accessJWTToken = signJWTToken(findUser.id);
+    const accessJWTToken = signJWTToken('access', findUser.id);
 
     // Create refresh token
-    const refreshJWTToken = signJWTToken(findUser.id, true);
+    const refreshJWTToken = signJWTToken('refresh', findUser.id);
 
     // Return refresh token in a cookie
     res?.cookie('refreshToken', refreshJWTToken, {

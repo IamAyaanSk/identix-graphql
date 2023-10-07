@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
 import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap.js';
@@ -172,13 +171,7 @@ const mutations: MutationResolvers = {
       // If user found generate token
       const passwordResetSecret = await getPasswordResetSecret(foundUser);
 
-      const resetToken = jwt.sign(
-        { id: foundUser.id, email: foundUser.email, passwordResetSecret },
-        JWT_ACCESS_SECRET_KEY,
-        {
-          expiresIn: '1h',
-        },
-      );
+      const resetToken = signJWTToken('email', foundUser.id, foundUser.email, passwordResetSecret);
 
       // // Send email to user
       const UserResetEmailParams: SendTemplatedEmailRequest = {
@@ -324,8 +317,8 @@ const mutations: MutationResolvers = {
     }
 
     // If token is not blacklisted return new access and refresh token
-    const newAccessToken = signJWTToken(decodedJWT.id);
-    const newRefreshToken = signJWTToken(decodedJWT.id);
+    const newAccessToken = signJWTToken('access', decodedJWT.id);
+    const newRefreshToken = signJWTToken('refresh', decodedJWT.id);
 
     if (!newAccessToken || !newRefreshToken) {
       return {
@@ -351,7 +344,6 @@ const mutations: MutationResolvers = {
       sameSite: 'none',
     });
 
-    console.log('tokens refreshed');
     return {
       status: ReturnStatus.Success,
       data: newAccessToken,
