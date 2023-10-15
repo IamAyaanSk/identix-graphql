@@ -1,24 +1,22 @@
 import gql from 'graphql-tag';
-
 import bcrypt from 'bcrypt';
 
-import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
-import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap.js';
-import { JOIcreateUserSchema, JOIrequestPasswordResetSchema } from '../../joi/userJOISchemas.js';
-import { checkPasswordResetSecret, getPasswordResetSecret } from '../../utils/getPasswordResetSecret.js';
-import { getDecodedJWT } from '../../utils/getDecodedJWT.js';
+import { MutationResolvers, ReturnStatus } from '@generated/resolvers-types';
+import { internalErrorMap } from '@constants/errorMaps/internalErrorMap';
+import { JOIcreateUserSchema, JOIrequestPasswordResetSchema } from '@joi_schemas/userJOISchemas';
+import { checkPasswordResetSecret, getPasswordResetSecret } from '@utils/getPasswordResetSecret';
+import { getDecodedJWT } from '@utils/getDecodedJWT';
 import {
-  IS_TESTING,
   JWT_ACCESS_SECRET_KEY,
   JWT_REFRESH_COOKIE_EXPIRES_IN,
   JWT_REFRESH_SECRET_KEY,
   SES_SENDERS_EMAIL_ADDRESS,
-} from '../../constants/global.js';
-import { SES_CLIENT } from '../../constants/sesClient.js';
+} from '@constants/global';
+import { SES_CLIENT } from '@constants/sesClient';
 import { SendTemplatedEmailRequest } from '@aws-sdk/client-ses';
-import { internalSuccessMap } from '../../constants/errorMaps/internalSuccessMap.js';
-import { isJWTTokenBlackListed, setJWTTokenBlackListed } from '../../utils/isJWTTokenBlackListed.js';
-import { signJWTToken } from '../../utils/signJWTToken.js';
+import { internalSuccessMap } from '@constants/errorMaps/internalSuccessMap';
+import { isJWTTokenBlackListed, setJWTTokenBlackListed } from '@utils/isJWTTokenBlackListed';
+import { signJWTToken } from '@utils/signJWTToken';
 
 const mutations: MutationResolvers = {
   register: async (_, { details }, { prisma }) => {
@@ -70,14 +68,14 @@ const mutations: MutationResolvers = {
         };
       }
 
-      if (IS_TESTING && details.username?.endsWith('-delete')) {
-        await prisma.user.deleteMany({
-          // Since delete needs a unique field
-          where: {
-            email: details.email,
-          },
-        });
-      }
+      // if (IS_TESTING && details.username?.endsWith('-delete')) {
+      //   await prisma.user.deleteMany({
+      //     // Since delete needs a unique field
+      //     where: {
+      //       email: details.email,
+      //     },
+      //   });
+      // }
 
       // Return Success message if user registered
       return {

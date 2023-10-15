@@ -34,6 +34,15 @@ const getRegisterMutationParams = (isForNewUser: boolean) => {
   return registerMutationParams;
 };
 
+afterAll(async () => {
+  await testPrismaClient.user.deleteMany({
+    // Since delete needs a unique field
+    where: {
+      email: 'newuser@gmail.com',
+    },
+  });
+});
+
 it('register new user', async () => {
   const registerMutationParams = getRegisterMutationParams(true);
 

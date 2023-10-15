@@ -1,8 +1,9 @@
 import { ApolloServer } from '@apollo/server';
-import { schema } from '../handlers/index.js';
-import { CustomApolloContext } from '../index.js';
 import { PrismaClient } from '@prisma/client';
 import { Redis } from 'ioredis';
+
+import { schema } from '@handlers/index';
+import { CustomApolloContext } from '@src/index';
 
 const testPrismaClient = new PrismaClient();
 

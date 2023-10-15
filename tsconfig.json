@@ -10,9 +10,21 @@
     "esModuleInterop": true,
     "types": ["node", "jest"],
     "strict": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["./src/*"],
+      "@constants*": ["./src/constants/*"],
+      "@generated/*": ["./src/generated/*"],
+      "@handlers/*": ["./src/handlers/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@templates/*": ["./src/templates/*"],
+      "@joi_schemas/*": ["./src/joi_schemas/*"]
+    },
     "noImplicitAny": true
   },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules", "**/__tests__/**"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "**/__tests__/**"],
+  "tsc-alias": {
+    "resolveFullPaths": true
+  }
 }

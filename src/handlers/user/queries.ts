@@ -1,9 +1,10 @@
 import gql from 'graphql-tag';
 import bcrypt from 'bcrypt';
-import { QueryResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
-import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap.js';
-import { signJWTToken } from '../../utils/signJWTToken.js';
-import { JWT_REFRESH_COOKIE_EXPIRES_IN } from '../../constants/global.js';
+
+import { QueryResolvers, ReturnStatus } from '@generated/resolvers-types';
+import { internalErrorMap } from '@constants/errorMaps/internalErrorMap';
+import { signJWTToken } from '@utils/signJWTToken';
+import { JWT_REFRESH_COOKIE_EXPIRES_IN } from '@constants/global';
 
 const queries: QueryResolvers = {
   login: async (_, { details }, { prisma, res }) => {

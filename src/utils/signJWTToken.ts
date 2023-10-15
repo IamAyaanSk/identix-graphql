@@ -1,11 +1,12 @@
+import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   JWT_ACCESS_EXPIRES_IN,
   JWT_ACCESS_SECRET_KEY,
   JWT_REFRESH_EXPIRES_IN,
   JWT_REFRESH_SECRET_KEY,
-} from '../constants/global.js';
-import jwt from 'jsonwebtoken';
-import { v4 as uuidv4 } from 'uuid';
+} from '@constants/global';
 
 const signJWTToken = (JWTType: string, userId?: string, userEmail?: string, passwordResetSecret?: string): string => {
   if (!userId) return '';
