@@ -11,7 +11,7 @@
     "postinstall": "npm run compile",
     "lint": "eslint \"src/**/*.ts\"",
     "format": "eslint \"src/**/*.ts\" --fix",
-    "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit"
+    "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "author": "Ayaan Shaikh",
   "license": "ISC",

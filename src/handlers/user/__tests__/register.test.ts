@@ -26,7 +26,7 @@ const getRegisterMutationParams = (isForNewUser: boolean) => {
       contextValue: {
         prisma: testPrismaClient,
         redis: testRedisClient,
-        userId: isForNewUser ? null : '3ce1d440-319e-4596-bd15-be9acebd03c7',
+        userId: isForNewUser ? null : '28a0a72b-aa7d-4fc5-9436-e1f95d83149a',
       },
     },
   ];
