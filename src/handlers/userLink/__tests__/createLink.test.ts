@@ -3,6 +3,7 @@ import { testApolloServer, testPrismaClient, testRedisClient } from '../../../co
 import { ReturnStatus, StatusDataErrorStringResolvers } from '../../../generated/resolvers-types';
 import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap';
 import { internalSuccessMap } from '../../../constants/errorMaps/internalSuccessMap';
+import { TESTING_DUMMY_USER_ID } from '../../../constants/global';
 
 const getCreateLinkMutationParams = (isForUnauthenticatedUser: boolean) => {
   const createLinkMutationParams = [
@@ -26,7 +27,7 @@ const getCreateLinkMutationParams = (isForUnauthenticatedUser: boolean) => {
       contextValue: {
         prisma: testPrismaClient,
         redis: testRedisClient,
-        userId: isForUnauthenticatedUser ? null : '28a0a72b-aa7d-4fc5-9436-e1f95d83149a',
+        userId: isForUnauthenticatedUser ? null : TESTING_DUMMY_USER_ID,
       },
     },
   ];

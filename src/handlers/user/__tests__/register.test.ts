@@ -3,6 +3,7 @@ import { testApolloServer, testPrismaClient, testRedisClient } from '../../../co
 import { ReturnStatus, StatusDataErrorStringResolvers } from '../../../generated/resolvers-types';
 import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap';
 import { internalSuccessMap } from '../../../constants/errorMaps/internalSuccessMap';
+import { TESTING_DUMMY_PASSWORD, TESTING_DUMMY_USER_ID } from '../../../constants/global';
 
 const getRegisterMutationParams = (isForNewUser: boolean) => {
   const registerMutationParams = [
@@ -17,7 +18,7 @@ const getRegisterMutationParams = (isForNewUser: boolean) => {
       variables: {
         details: {
           email: isForNewUser ? 'newuser@gmail.com' : 'existing@gmail.com',
-          password: 'test12345',
+          password: TESTING_DUMMY_PASSWORD,
           username: isForNewUser ? 'newuser-delete' : 'existinguser',
         },
       },
@@ -26,7 +27,7 @@ const getRegisterMutationParams = (isForNewUser: boolean) => {
       contextValue: {
         prisma: testPrismaClient,
         redis: testRedisClient,
-        userId: isForNewUser ? null : '28a0a72b-aa7d-4fc5-9436-e1f95d83149a',
+        userId: isForNewUser ? null : TESTING_DUMMY_USER_ID,
       },
     },
   ];

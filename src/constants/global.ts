@@ -1,5 +1,8 @@
 const PORT: number = parseInt(process.env.PORT || '1337');
 const DATABASE_URL: string = process.env.DATABASE_URL || '';
+const TESTING_DUMMY_PASSWORD: string = process.env.TESTING_DUMMY_PASSWORD || '';
+const TESTING_DUMMY_USER_ID: string = process.env.TESTING_DUMMY_USER_ID || '';
+const TESTING_DUMMY_USER_LINK_ID: string = process.env.TESTING_DUMMY_USER_LINK_ID || '';
 const JWT_ACCESS_SECRET_KEY: string = process.env.JWT_ACCESS_SECRET_KEY || '';
 const JWT_REFRESH_SECRET_KEY: string = process.env.JWT_REFRESH_SECRET_KEY || '';
 const JWT_ACCESS_EXPIRES_IN: string = process.env.JWT_ACCESS_EXPIRES_IN || '0m';
@@ -12,6 +15,9 @@ const IS_TESTING = process.env.NODE_ENV || false;
 export {
   PORT,
   DATABASE_URL,
+  TESTING_DUMMY_PASSWORD,
+  TESTING_DUMMY_USER_ID,
+  TESTING_DUMMY_USER_LINK_ID,
   JWT_ACCESS_SECRET_KEY,
   SES_SENDERS_EMAIL_ADDRESS,
   IS_TESTING,

@@ -3,6 +3,7 @@ import { testApolloServer, testPrismaClient, testRedisClient } from '../../../co
 import { ReturnStatus, StatusDataErrorStringResolvers } from '../../../generated/resolvers-types';
 import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap';
 import { internalSuccessMap } from '../../../constants/errorMaps/internalSuccessMap';
+import { TESTING_DUMMY_USER_ID, TESTING_DUMMY_USER_LINK_ID } from '../../../constants/global';
 
 const getDeleteLinkMutationParams = (isForUnauthenticatedUser: boolean) => {
   const deleteLinkMutationParams = [
@@ -15,14 +16,14 @@ const getDeleteLinkMutationParams = (isForUnauthenticatedUser: boolean) => {
         }
       }`,
       variables: {
-        linkId: 'b8f0be11-d33c-413b-acca-4d830c84a449',
+        linkId: TESTING_DUMMY_USER_LINK_ID,
       },
     },
     {
       contextValue: {
         prisma: testPrismaClient,
         redis: testRedisClient,
-        userId: isForUnauthenticatedUser ? null : '28a0a72b-aa7d-4fc5-9436-e1f95d83149a',
+        userId: isForUnauthenticatedUser ? null : TESTING_DUMMY_USER_ID,
       },
     },
   ];
@@ -34,14 +35,14 @@ afterAll(async () => {
   // Force delete the link
   await testPrismaClient.userLink.delete({
     where: {
-      id: 'b8f0be11-d33c-413b-acca-4d830c84a449',
+      id: TESTING_DUMMY_USER_LINK_ID,
     },
   });
   // Remake the test Link again for next tests
   await testPrismaClient.userLink.create({
     data: {
-      id: 'b8f0be11-d33c-413b-acca-4d830c84a449',
-      userId: '28a0a72b-aa7d-4fc5-9436-e1f95d83149a',
+      id: TESTING_DUMMY_USER_LINK_ID,
+      userId: TESTING_DUMMY_USER_ID,
       lastName: 'test',
       firstName: 'test',
       email: 'test@gmail.com',

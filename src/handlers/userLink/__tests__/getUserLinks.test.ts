@@ -2,6 +2,7 @@ import assert from 'node:assert';
 import { testApolloServer, testPrismaClient, testRedisClient } from '../../../constants/testServerClients';
 import { ReturnStatus, StatusDataErrorUserLinks } from '../../../generated/resolvers-types';
 import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap';
+import { TESTING_DUMMY_USER_ID, TESTING_DUMMY_USER_LINK_ID } from '../../../constants/global';
 
 const getUserLinksQuery = (isForUnauthenticatedUser: boolean) => {
   const userLinksQueryParams = [
@@ -20,7 +21,7 @@ const getUserLinksQuery = (isForUnauthenticatedUser: boolean) => {
       contextValue: {
         prisma: testPrismaClient,
         redis: testRedisClient,
-        userId: isForUnauthenticatedUser ? null : '28a0a72b-aa7d-4fc5-9436-e1f95d83149a',
+        userId: isForUnauthenticatedUser ? null : TESTING_DUMMY_USER_ID,
       },
     },
   ];
@@ -62,7 +63,7 @@ it('display links for authenticated user', async () => {
   expect(response.body.singleResult.data?.getUserLinks.data).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
-        id: 'b8f0be11-d33c-413b-acca-4d830c84a449',
+        id: TESTING_DUMMY_USER_LINK_ID,
       }),
     ]),
   );
