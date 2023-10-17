@@ -72,23 +72,32 @@ const mutations: MutationResolvers = {
     }
 
     // Find link to delete
-    const deleteLink = await prisma.userLink.update({
+    const findLink = await prisma.userLink.findFirst({
       where: {
         id: linkId,
+        isDeleted: false,
+      },
+    });
+
+    // If link not deleted return link not deleted error
+    if (!findLink) {
+      return {
+        status: ReturnStatus.Error,
+        error: internalErrorMap['userLink/alreadyDeleted'],
+      };
+    }
+
+    // Add delete flag
+    await prisma.userLink.update({
+      where: {
+        id: linkId,
+        isDeleted: false,
       },
 
       data: {
         isDeleted: true,
       },
     });
-
-    // If link not deleted return link not deleted error
-    if (!deleteLink) {
-      return {
-        status: ReturnStatus.Error,
-        error: internalErrorMap['userLink/failDeleted'],
-      };
-    }
 
     // Else return success message
     return {
