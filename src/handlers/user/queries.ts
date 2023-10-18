@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { QueryResolvers, ReturnStatus } from '@generated/resolvers-types';
 import { internalErrorMap } from '@constants/errorMaps/internalErrorMap';
 import { signJWTToken } from '@utils/signJWTToken';
-import { JWT_REFRESH_COOKIE_EXPIRES_IN } from '@constants/global';
+import { IS_TESTING, JWT_REFRESH_COOKIE_EXPIRES_IN, TESTING_DUMMY_USER_ID } from '@constants/global';
 
 const queries: QueryResolvers = {
   login: async (_, { details }, { prisma, res }) => {
@@ -42,6 +42,13 @@ const queries: QueryResolvers = {
     const refreshJWTToken = signJWTToken('refresh', findUser.id);
 
     // Return refresh token in a cookie
+    if (IS_TESTING && findUser.id === TESTING_DUMMY_USER_ID) {
+      // Dont issue refresh token at the time of testing
+      return {
+        status: ReturnStatus.Success,
+        data: accessJWTToken,
+      };
+    }
     res?.cookie('refreshToken', refreshJWTToken, {
       httpOnly: true,
       secure: true, //process.env.NODE_ENV === 'production', // set true at time of production

@@ -32,7 +32,7 @@ const getUserLinkQuery = (isForUnauthenticatedUser: boolean) => {
   return userLinkQueryParams;
 };
 
-it('display links for unauthenticated user', async () => {
+it('display link for unauthenticated user', async () => {
   const userLinkQueryParams = getUserLinkQuery(true);
 
   const response = await testApolloServer.executeOperation<{
@@ -49,7 +49,7 @@ it('display links for unauthenticated user', async () => {
   expect(response.body.singleResult.data?.getUserLink.error).toBe(internalErrorMap['auth/unauthenticated']);
 });
 
-it('display links for authenticated user', async () => {
+it('display link for authenticated user', async () => {
   const userLinkQueryParams = getUserLinkQuery(false);
 
   const response = await testApolloServer.executeOperation<{
