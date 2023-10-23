@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
-import { QueryResolvers, ReturnStatus } from '@generated/resolvers-types.js';
-import { dateToEpochTimestamp } from '@utils/dateToEpochTimestamp.js';
-import { internalErrorMap } from '@constants/errorMaps/internalErrorMap.js';
+import { QueryResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
+import { dateToEpochTimestamp } from '../../utils/dateToEpochTimestamp.js';
+import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap.js';
 
 const queries: QueryResolvers = {
   getUserLinks: async (_, {}, { prisma, userId }) => {

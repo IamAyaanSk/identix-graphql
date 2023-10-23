@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
-import { MutationResolvers, ReturnStatus } from '@generated/resolvers-types.js';
-import { internalErrorMap } from '@constants/errorMaps/internalErrorMap.js';
-import { JOIcreateUserLinkSchema, JOIUpdateUserLinkSchema } from '@joi_schemas/userLinkJOISchemas.js';
-import { internalSuccessMap } from '@constants/errorMaps/internalSuccessMap.js';
+import { MutationResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
+import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap.js';
+import { JOIcreateUserLinkSchema, JOIUpdateUserLinkSchema } from '../../joi_schemas/userLinkJOISchemas.js';
+import { internalSuccessMap } from '../../constants/errorMaps/internalSuccessMap.js';
 
 const mutations: MutationResolvers = {
   createLink: async (_, { details }, { prisma, userId }) => {

@@ -6,7 +6,7 @@ import {
   JWT_ACCESS_SECRET_KEY,
   JWT_REFRESH_EXPIRES_IN,
   JWT_REFRESH_SECRET_KEY,
-} from '@constants/global';
+} from '../constants/global.js';
 
 const signJWTToken = (JWTType: string, userId?: string, userEmail?: string, passwordResetSecret?: string): string => {
   if (!userId) return '';

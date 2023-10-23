@@ -1,14 +1,16 @@
 const PORT: number = parseInt(process.env.PORT || '1337');
 const DATABASE_URL: string = process.env.DATABASE_URL || '';
-const TESTING_DUMMY_PASSWORD: string = process.env.TESTING_DUMMY_PASSWORD || '';
-const TESTING_DUMMY_USER_ID: string = process.env.TESTING_DUMMY_USER_ID || '';
-const TESTING_DUMMY_USER_LINK_ID: string = process.env.TESTING_DUMMY_USER_LINK_ID || '';
 const JWT_ACCESS_SECRET_KEY: string = process.env.JWT_ACCESS_SECRET_KEY || '';
 const JWT_REFRESH_SECRET_KEY: string = process.env.JWT_REFRESH_SECRET_KEY || '';
-const JWT_ACCESS_EXPIRES_IN: string = process.env.JWT_ACCESS_EXPIRES_IN || '0m';
-const JWT_REFRESH_EXPIRES_IN: string = process.env.JWT_REFRESH_EXPIRES_IN || '0m';
-const JWT_REFRESH_COOKIE_EXPIRES_IN: number = parseInt(process.env.JWT_REFRESH_COOKIE_EXPIRES_IN || '0');
 const SES_SENDERS_EMAIL_ADDRESS: string = process.env.SES_SENDERS_EMAIL_ADDRESS || '';
+
+const JWT_ACCESS_EXPIRES_IN: string = '20m';
+const JWT_REFRESH_EXPIRES_IN: string = '15d';
+const JWT_REFRESH_COOKIE_EXPIRES_IN: number = 1296000000;
+
+const TESTING_DUMMY_PASSWORD: string = 'test12345';
+const TESTING_DUMMY_USER_ID: string = '4280e50c-7737-4f1d-bd3b-331d138f10b4';
+const TESTING_DUMMY_USER_LINK_ID: string = 'e511d606-b6cb-4f85-87ff-15fa9173ce06';
 
 const IS_TESTING = process.env.NODE_ENV || false;
 
