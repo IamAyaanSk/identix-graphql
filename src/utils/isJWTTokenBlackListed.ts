@@ -1,5 +1,5 @@
 import { JWT_REFRESH_COOKIE_EXPIRES_IN } from '../constants/global.js';
-import { redis } from '../constants/redisClient.js';
+import { redis } from '../constants/dataClients.js';
 
 const isJWTTokenBlackListed = async (token: string): Promise<boolean> => {
   const blacklistKey = `blacklist:${token}`;

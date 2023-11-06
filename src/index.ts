@@ -12,7 +12,7 @@ import cookieParser from 'cookie-parser';
 import { PrismaClient } from '@prisma/client';
 
 // Project files
-import { redis } from './constants/redisClient.js';
+import { redis, prisma } from './constants/dataClients.js';
 import { schema } from './handlers/index.js';
 import { JWT_ACCESS_SECRET_KEY, PORT } from './constants/global.js';
 import { getDecodedJWT } from './utils/getDecodedJWT.js';
@@ -24,8 +24,6 @@ export interface CustomApolloContext {
   req?: express.Request;
   res?: express.Response;
 }
-
-const prisma = new PrismaClient();
 
 const app = express();
 

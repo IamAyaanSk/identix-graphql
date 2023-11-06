@@ -48,6 +48,13 @@ afterAll(async () => {
       email: 'test@gmail.com',
     },
   });
+
+  testRedisClient.disconnect();
+  console.log('redis stopped');
+  await testPrismaClient.$disconnect();
+  console.log('prisma stopped');
+  await testApolloServer.stop();
+  console.log('server stopped');
 });
 
 it('delete link for unauthenticated user', async () => {

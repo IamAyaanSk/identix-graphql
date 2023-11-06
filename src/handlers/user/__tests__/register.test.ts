@@ -42,6 +42,12 @@ afterAll(async () => {
       email: 'newuser@gmail.com',
     },
   });
+  testRedisClient.disconnect();
+  console.log('redis stopped');
+  await testPrismaClient.$disconnect();
+  console.log('prisma stopped');
+  await testApolloServer.stop();
+  console.log('server stopped');
 });
 
 it('register new user', async () => {

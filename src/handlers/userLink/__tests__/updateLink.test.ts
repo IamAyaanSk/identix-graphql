@@ -34,6 +34,15 @@ const getupdateLinkMutationParams = (isForUnauthenticatedUser: boolean) => {
   return updateLinkMutationParams;
 };
 
+afterAll(async () => {
+  testRedisClient.disconnect();
+  console.log('redis stopped');
+  await testPrismaClient.$disconnect();
+  console.log('prisma stopped');
+  await testApolloServer.stop();
+  console.log('server stopped');
+});
+
 it('delete link for unauthenticated user', async () => {
   const updateLinkMutationParams = getupdateLinkMutationParams(true);
 

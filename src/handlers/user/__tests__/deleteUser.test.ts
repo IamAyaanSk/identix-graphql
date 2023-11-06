@@ -48,6 +48,12 @@ afterAll(async () => {
       id: '4280e3fc-7737-4f1d-bd3b-331d138f230r',
     },
   });
+  testRedisClient.disconnect();
+  console.log('redis stopped');
+  await testPrismaClient.$disconnect();
+  console.log('prisma stopped');
+  await testApolloServer.stop();
+  console.log('server stopped');
 });
 
 it('delete user for non existing user', async () => {

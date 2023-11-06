@@ -29,6 +29,15 @@ const getUserLinksQuery = (isForUnauthenticatedUser: boolean) => {
   return userLinksQueryParams;
 };
 
+afterAll(async () => {
+  testRedisClient.disconnect();
+  console.log('redis stopped');
+  await testPrismaClient.$disconnect();
+  console.log('prisma stopped');
+  await testApolloServer.stop();
+  console.log('server stopped');
+});
+
 it('display links for unauthenticated user', async () => {
   const userLinksQueryParams = getUserLinksQuery(true);
 

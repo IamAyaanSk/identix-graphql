@@ -33,6 +33,15 @@ const getLoginQueryParams = (isForNewUser: boolean) => {
   return loginQueryParams;
 };
 
+afterAll(async () => {
+  testRedisClient.disconnect();
+  console.log('redis stopped');
+  await testPrismaClient.$disconnect();
+  console.log('prisma stopped');
+  await testApolloServer.stop();
+  console.log('server stopped');
+});
+
 it('login new user', async () => {
   const loginQueryParams = getLoginQueryParams(true);
 
