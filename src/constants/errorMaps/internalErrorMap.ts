@@ -1,7 +1,7 @@
 type ErrorMapKey =
   | 'auth/unauthorized'
   | 'auth/unauthenticated'
-  | 'user/notAuthorize'
+  | 'user/inValidUserLoginCredentials'
   | 'user/emailAlreadyExists'
   | 'user/usernameAlreadyExists'
   | 'user/failRegister'
@@ -20,7 +20,7 @@ const internalErrorMap: Record<ErrorMapKey, string> = {
   'auth/unauthorized': 'You are not authorized to perform this action',
   'auth/unauthenticated': 'You are not authenticated',
   'auth/samePassword': 'You cannot set your new password same as old password',
-  'user/notAuthorize': 'Unable to authorize. Please check username/password combination',
+  'user/inValidUserLoginCredentials': 'Unable to login. Please check username/password combination',
   'user/emailAlreadyExists': 'Email already registered',
   'user/usernameAlreadyExists': 'Username is taken',
   'user/failRegister': 'Registration failed',

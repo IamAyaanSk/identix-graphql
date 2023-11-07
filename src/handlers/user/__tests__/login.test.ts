@@ -56,7 +56,7 @@ it('login new user', async () => {
   console.log(response.body.singleResult.data);
 
   expect(response.body.singleResult.data?.login.status).toBe(ReturnStatus.Error);
-  expect(response.body.singleResult.data?.login.error).toBe(internalErrorMap['user/notAuthorize']);
+  expect(response.body.singleResult.data?.login.error).toBe(internalErrorMap['user/inValidUserLoginCredentials']);
 });
 
 it('login existing user', async () => {

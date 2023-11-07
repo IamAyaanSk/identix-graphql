@@ -5,7 +5,7 @@ import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap'
 import { internalSuccessMap } from '../../../constants/errorMaps/internalSuccessMap';
 import { TESTING_DUMMY_USER_ID, TESTING_DUMMY_USER_LINK_ID } from '../../../constants/global';
 
-const getDeleteLinkMutationParams = (isForUnauthenticatedUser: boolean) => {
+const getDeleteLinkMutationParams = (isForUnauthenticatedUser: boolean, isForInvalidLink: boolean = false) => {
   const deleteLinkMutationParams = [
     {
       query: `mutation DeleteLink($linkId: String!) {
@@ -16,7 +16,7 @@ const getDeleteLinkMutationParams = (isForUnauthenticatedUser: boolean) => {
         }
       }`,
       variables: {
-        linkId: TESTING_DUMMY_USER_LINK_ID,
+        linkId: isForInvalidLink ? '' : TESTING_DUMMY_USER_LINK_ID,
       },
     },
     {
@@ -72,6 +72,23 @@ it('delete link for unauthenticated user', async () => {
 
   expect(response.body.singleResult.data?.deleteLink.status).toBe(ReturnStatus.Error);
   expect(response.body.singleResult.data?.deleteLink.error).toBe(internalErrorMap['auth/unauthenticated']);
+});
+
+it('delete link for invalid Link Id', async () => {
+  const deleteLinkMutationParams = getDeleteLinkMutationParams(true, true);
+
+  const response = await testApolloServer.executeOperation<{
+    deleteLink: StatusDataErrorStringResolvers;
+  }>(deleteLinkMutationParams[0], deleteLinkMutationParams[1]);
+
+  assert(response.body.kind === 'single');
+
+  expect(response.body.singleResult.errors).toBeUndefined();
+
+  console.log(response.body.singleResult.data);
+
+  expect(response.body.singleResult.data?.deleteLink.status).toBe(ReturnStatus.Error);
+  expect(response.body.singleResult.data?.deleteLink.error).toBe(internalErrorMap['userLink/alreadyDeleted']);
 });
 
 it('delete link for authenticated user', async () => {

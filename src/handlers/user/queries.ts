@@ -20,7 +20,7 @@ const queries: QueryResolvers = {
     if (!findUser) {
       return {
         status: ReturnStatus.Error,
-        error: internalErrorMap['user/notAuthorize'],
+        error: internalErrorMap['user/inValidUserLoginCredentials'],
       };
     }
 
@@ -31,7 +31,7 @@ const queries: QueryResolvers = {
     if (!pwdCheck) {
       return {
         status: ReturnStatus.Error,
-        data: internalErrorMap['user/notAuthorize'],
+        data: internalErrorMap['user/inValidUserLoginCredentials'],
       };
     }
 

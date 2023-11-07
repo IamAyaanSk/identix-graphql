@@ -68,15 +68,6 @@ const mutations: MutationResolvers = {
         };
       }
 
-      // if (IS_TESTING && details.username?.endsWith('-delete')) {
-      //   await prisma.user.deleteMany({
-      //     // Since delete needs a unique field
-      //     where: {
-      //       email: details.email,
-      //     },
-      //   });
-      // }
-
       // Return Success message if user registered
       return {
         status: ReturnStatus.Success,

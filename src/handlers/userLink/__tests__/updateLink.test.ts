@@ -5,7 +5,7 @@ import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap'
 import { internalSuccessMap } from '../../../constants/errorMaps/internalSuccessMap';
 import { TESTING_DUMMY_USER_ID, TESTING_DUMMY_USER_LINK_ID } from '../../../constants/global';
 
-const getupdateLinkMutationParams = (isForUnauthenticatedUser: boolean) => {
+const getupdateLinkMutationParams = (isForUnauthenticatedUser: boolean, isForInvalidLink: boolean = false) => {
   const updateLinkMutationParams = [
     {
       query: `mutation Mutation($linkId: String!, $details: UserLinkUpdateInput!) {
@@ -16,7 +16,7 @@ const getupdateLinkMutationParams = (isForUnauthenticatedUser: boolean) => {
         }
       }`,
       variables: {
-        linkId: TESTING_DUMMY_USER_LINK_ID,
+        linkId: isForInvalidLink ? '' : TESTING_DUMMY_USER_LINK_ID,
         details: {
           email: 'test@gmail.com',
         },
@@ -43,7 +43,7 @@ afterAll(async () => {
   console.log('server stopped');
 });
 
-it('delete link for unauthenticated user', async () => {
+it('update link for unauthenticated user', async () => {
   const updateLinkMutationParams = getupdateLinkMutationParams(true);
 
   const response = await testApolloServer.executeOperation<{
@@ -60,7 +60,24 @@ it('delete link for unauthenticated user', async () => {
   expect(response.body.singleResult.data?.updateLink.error).toBe(internalErrorMap['auth/unauthenticated']);
 });
 
-it('delete link for authenticated user', async () => {
+it('update link for invalid link Id', async () => {
+  const updateLinkMutationParams = getupdateLinkMutationParams(true, true);
+
+  const response = await testApolloServer.executeOperation<{
+    updateLink: StatusDataErrorStringResolvers;
+  }>(updateLinkMutationParams[0], updateLinkMutationParams[1]);
+
+  assert(response.body.kind === 'single');
+
+  expect(response.body.singleResult.errors).toBeUndefined();
+
+  console.log(response.body.singleResult.data);
+
+  expect(response.body.singleResult.data?.updateLink.status).toBe(ReturnStatus.Error);
+  expect(response.body.singleResult.data?.updateLink.error).toBe(internalErrorMap['userLink/failUpdate']);
+});
+
+it('update link for authenticated user', async () => {
   const updateLinkMutationParams = getupdateLinkMutationParams(false);
 
   const response = await testApolloServer.executeOperation<{
