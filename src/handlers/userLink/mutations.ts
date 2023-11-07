@@ -79,7 +79,7 @@ const mutations: MutationResolvers = {
       },
     });
 
-    // If link not deleted return link not deleted error
+    // If link not found return link not deleted error
     if (!findLink) {
       return {
         status: ReturnStatus.Error,
@@ -88,7 +88,7 @@ const mutations: MutationResolvers = {
     }
 
     // Add delete flag
-    await prisma.userLink.update({
+    const delLink = await prisma.userLink.update({
       where: {
         id: linkId,
         isDeleted: false,
@@ -98,6 +98,14 @@ const mutations: MutationResolvers = {
         isDeleted: true,
       },
     });
+
+    // If link not deleted return link not deleted error
+    if (!delLink) {
+      return {
+        status: ReturnStatus.Error,
+        error: internalErrorMap['userLink/alreadyDeleted'],
+      };
+    }
 
     // Else return success message
     return {
@@ -119,6 +127,21 @@ const mutations: MutationResolvers = {
       }
 
       // Find link to update
+      const findLink = await prisma.userLink.findFirst({
+        where: {
+          id: linkId,
+          isDeleted: false,
+        },
+      });
+
+      // If link not found return failed to update error
+      if (!findLink) {
+        return {
+          status: ReturnStatus.Error,
+          error: internalErrorMap['userLink/failUpdate'],
+        };
+      }
+
       const updateLink = await prisma.userLink.update({
         where: {
           id: linkId,
@@ -136,7 +159,7 @@ const mutations: MutationResolvers = {
         },
       });
 
-      // If link not found return failed to update error
+      // If link failed to update
       if (!updateLink) {
         return {
           status: ReturnStatus.Error,

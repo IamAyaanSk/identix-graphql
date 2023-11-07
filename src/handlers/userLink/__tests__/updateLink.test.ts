@@ -61,7 +61,7 @@ it('update link for unauthenticated user', async () => {
 });
 
 it('update link for invalid link Id', async () => {
-  const updateLinkMutationParams = getupdateLinkMutationParams(true, true);
+  const updateLinkMutationParams = getupdateLinkMutationParams(false, true);
 
   const response = await testApolloServer.executeOperation<{
     updateLink: StatusDataErrorStringResolvers;

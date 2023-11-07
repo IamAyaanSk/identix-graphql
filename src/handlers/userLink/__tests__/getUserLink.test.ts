@@ -59,7 +59,7 @@ it('display link for unauthenticated user', async () => {
 });
 
 it('display link for invalid user link id', async () => {
-  const userLinkQueryParams = getUserLinkQuery(true, true);
+  const userLinkQueryParams = getUserLinkQuery(false, true);
 
   const response = await testApolloServer.executeOperation<{
     getUserLink: StatusDataErrorUserLink;

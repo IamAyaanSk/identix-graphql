@@ -75,7 +75,7 @@ it('delete link for unauthenticated user', async () => {
 });
 
 it('delete link for invalid Link Id', async () => {
-  const deleteLinkMutationParams = getDeleteLinkMutationParams(true, true);
+  const deleteLinkMutationParams = getDeleteLinkMutationParams(false, true);
 
   const response = await testApolloServer.executeOperation<{
     deleteLink: StatusDataErrorStringResolvers;
