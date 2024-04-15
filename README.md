@@ -62,7 +62,7 @@ For production environment:
 ------------
 
 ## Author
-### Afnan Shaikh
+### Ayaan & Afnan
 
 
 
