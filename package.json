@@ -6,7 +6,7 @@
   "scripts": {
     "generate": "pnpx prisma generate && graphql-codegen --config codegen.yml",
     "compile": "pnpm run generate && tsc -p tsconfig.json",
-    "build": "pnpm run compile && node ./dist/index.js",
+    "build": "pnpm run compile && NODE_ENV=production node ./dist/index.js",
     "start": "concurrently  -g --names \"CodeGen,tsx\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --config codegen.yml\" \"node --import tsx ./src/index.ts\"",
     "postinstall": "pnpm run compile",
     "watch": "concurrently --names \"CodeGen,tsx\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --watch --config codegen.yml\" \"tsx watch src/index.ts\"",
