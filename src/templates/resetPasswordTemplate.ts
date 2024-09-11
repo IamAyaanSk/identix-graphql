@@ -1,6 +1,6 @@
 import { CreateTemplateRequest } from '@aws-sdk/client-ses';
 
-import { SES_CLIENT } from '../constants/sesClient.js';
+import { SES_CLIENT } from '../constants/sesClient';
 
 const params: CreateTemplateRequest = {
   Template: {

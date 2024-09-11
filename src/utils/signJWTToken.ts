@@ -6,7 +6,7 @@ import {
   JWT_ACCESS_SECRET_KEY,
   JWT_REFRESH_EXPIRES_IN,
   JWT_REFRESH_SECRET_KEY,
-} from '../constants/global.js';
+} from '../constants/global';
 
 const signJWTToken = (JWTType: string, userId?: string, userEmail?: string, passwordResetSecret?: string): string => {
   if (!userId) return '';
@@ -22,7 +22,7 @@ const signJWTToken = (JWTType: string, userId?: string, userEmail?: string, pass
 
     case 'email':
       // Check if email and password secret is present
-      if (!userEmail || !passwordResetSecret) '';
+      if (!userEmail || !passwordResetSecret) return '';
 
       return jwt.sign({ id: userId, email: userEmail, passwordResetSecret }, JWT_ACCESS_SECRET_KEY, {
         expiresIn: '1h',
