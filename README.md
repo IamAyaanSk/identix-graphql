@@ -61,6 +61,10 @@ For production environment:
 
 ------------
 
+
+🔴 Note: As the service is hosted on a free tier ( which goes down on inactivity ) it may take some time at your initial request 
+
+
 ## Author
 ### Ayaan & Afnan
 
