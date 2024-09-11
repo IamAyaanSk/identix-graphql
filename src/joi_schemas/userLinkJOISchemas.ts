@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-import { UserLinkCreateInput, UserLinkUpdateInput } from '../generated/resolvers-types';
+import { UserLinkCreateInput, UserLinkUpdateInput } from '../generated/resolvers-types.js';
 
 const commonUserLinkSchemaItems = {
   firstName: Joi.string().min(1).max(10).alphanum().messages({

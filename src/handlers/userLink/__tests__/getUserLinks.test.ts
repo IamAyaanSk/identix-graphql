@@ -1,8 +1,8 @@
 import assert from 'node:assert';
-import { testApolloServer, testPrismaClient, testRedisClient } from '../../../constants/testServerClients';
-import { ReturnStatus, StatusDataErrorUserLinks } from '../../../generated/resolvers-types';
-import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap';
-import { TESTING_DUMMY_USER_ID, TESTING_DUMMY_USER_LINK_ID } from '../../../constants/global';
+import { testApolloServer, testPrismaClient, testRedisClient } from '../../../constants/testServerClients.js';
+import { ReturnStatus, StatusDataErrorUserLinks } from '../../../generated/resolvers-types.js';
+import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap.js';
+import { TESTING_DUMMY_USER_ID, TESTING_DUMMY_USER_LINK_ID } from '../../../constants/global.js';
 
 const getUserLinksQuery = (isForUnauthenticatedUser: boolean) => {
   const userLinksQueryParams = [

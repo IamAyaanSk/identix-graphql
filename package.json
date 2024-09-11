@@ -7,7 +7,7 @@
     "generate": "pnpx prisma generate && graphql-codegen --config codegen.yml",
     "compile": "pnpm run generate && tsc -p tsconfig.json",
     "build": "pnpm run compile && docker-compose up -d && node ./dist/index.js",
-    "start": "concurrently  -g --names \"CodeGen,docker,tsx\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --config codegen.yml\" \"docker-compose up -d\"  \"node --loader tsx ./src/index.ts\"",
+    "start": "concurrently  -g --names \"CodeGen,docker,tsx\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --config codegen.yml\" \"docker-compose up -d\"  \"node --import tsx ./src/index.ts\"",
     "postinstall": "pnpm run compile",
     "watch": "concurrently --names \"CodeGen,docker,tsx\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --watch --config codegen.yml\" \"docker-compose up -d\" \"tsx watch src/index.ts\"",
     "lint": "eslint \"src/**/*.ts\"",

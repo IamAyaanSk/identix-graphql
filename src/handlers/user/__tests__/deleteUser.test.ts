@@ -2,11 +2,11 @@
 // afterall: force delete the test user
 
 import assert from 'node:assert';
-import { testApolloServer, testPrismaClient, testRedisClient } from '../../../constants/testServerClients';
-import { ReturnStatus, StatusDataErrorStringResolvers } from '../../../generated/resolvers-types';
-import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap';
-import { internalSuccessMap } from '../../../constants/errorMaps/internalSuccessMap';
-import { TESTING_DUMMY_PASSWORD } from '../../../constants/global';
+import { testApolloServer, testPrismaClient, testRedisClient } from '../../../constants/testServerClients.js';
+import { ReturnStatus, StatusDataErrorStringResolvers } from '../../../generated/resolvers-types.js';
+import { internalErrorMap } from '../../../constants/errorMaps/internalErrorMap.js';
+import { internalSuccessMap } from '../../../constants/errorMaps/internalSuccessMap.js';
+import { TESTING_DUMMY_PASSWORD } from '../../../constants/global.js';
 
 const getDeleteUserMutationParams = (isForUnauthenticatedUser: boolean) => {
   const deleteUserMutationParams = [
