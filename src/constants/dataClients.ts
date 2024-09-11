@@ -1,9 +1,9 @@
 import Redis from 'ioredis';
 import { PrismaClient } from '@prisma/client';
 import mockRedis from 'ioredis-mock';
-import { IS_TESTING } from './global.js';
+import { IS_TESTING, REDIS_CONNECTION_URL } from './global.js';
 
-const redisClient: Redis = IS_TESTING ? new mockRedis() : new Redis();
+const redisClient: Redis = IS_TESTING ? new mockRedis() : new Redis(REDIS_CONNECTION_URL);
 const prismaClient = new PrismaClient();
 
 redisClient.on('connect', () => {

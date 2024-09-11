@@ -1,8 +1,9 @@
 const PORT: number = parseInt(process.env.PORT || '1337');
-const DATABASE_URL: string = process.env.DATABASE_URL || '';
+const DATABASE_CONNECTION_URL: string = process.env.DATABASE_CONNECTION_URL || '';
 const JWT_ACCESS_SECRET_KEY: string = process.env.JWT_ACCESS_SECRET_KEY || '';
 const JWT_REFRESH_SECRET_KEY: string = process.env.JWT_REFRESH_SECRET_KEY || '';
 const SES_SENDERS_EMAIL_ADDRESS: string = process.env.SES_SENDERS_EMAIL_ADDRESS || '';
+const REDIS_CONNECTION_URL: string = process.env.REDIS_CONNECTION_URL || '';
 
 const JWT_ACCESS_EXPIRES_IN: string = '20m';
 const JWT_REFRESH_EXPIRES_IN: string = '15d';
@@ -16,7 +17,7 @@ const IS_TESTING = process.env.NODE_ENV || false;
 
 export {
   PORT,
-  DATABASE_URL,
+  DATABASE_CONNECTION_URL,
   TESTING_DUMMY_PASSWORD,
   TESTING_DUMMY_USER_ID,
   TESTING_DUMMY_USER_LINK_ID,
@@ -27,4 +28,5 @@ export {
   JWT_ACCESS_EXPIRES_IN,
   JWT_REFRESH_EXPIRES_IN,
   JWT_REFRESH_COOKIE_EXPIRES_IN,
+  REDIS_CONNECTION_URL,
 };

@@ -163,29 +163,29 @@ const mutations: MutationResolvers = {
       const resetToken = signJWTToken('email', foundUser.id, foundUser.email, passwordResetSecret);
 
       // // Send email to user
-      const UserResetEmailParams: SendTemplatedEmailRequest = {
-        Source: SES_SENDERS_EMAIL_ADDRESS,
-        Destination: {
-          ToAddresses: [foundUser.email],
-        },
-        Template: 'ResetPasswordTemplate',
-        TemplateData: JSON.stringify({ username: foundUser.username, token: resetToken }),
-      };
+      // const UserResetEmailParams: SendTemplatedEmailRequest = {
+      //   Source: SES_SENDERS_EMAIL_ADDRESS,
+      //   Destination: {
+      //     ToAddresses: [foundUser.email],
+      //   },
+      //   Template: 'ResetPasswordTemplate',
+      //   TemplateData: JSON.stringify({ username: foundUser.username, token: resetToken }),
+      // };
 
-      const sent = SES_CLIENT.sendTemplatedEmail(UserResetEmailParams);
+      // const sent = SES_CLIENT.sendTemplatedEmail(UserResetEmailParams);
 
       // Return error if failed to sent email
-      if (sent instanceof Error) {
-        return {
-          status: ReturnStatus.Error,
-          error: internalErrorMap['server/failComplete'],
-        };
-      }
+      // if (sent instanceof Error) {
+      //   return {
+      //     status: ReturnStatus.Error,
+      //     error: internalErrorMap['server/failComplete'],
+      //   };
+      // }
 
       // Return success message
       return {
         status: ReturnStatus.Success,
-        data: internalSuccessMap['user/successPasswordResetRequest'],
+        data: resetToken,
       };
     } catch (validationError) {
       if (validationError instanceof Error) {
