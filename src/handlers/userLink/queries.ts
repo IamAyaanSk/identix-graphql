@@ -1,7 +1,8 @@
 import gql from 'graphql-tag';
-import { QueryResolvers, ReturnStatus } from '../../generated/resolvers-types.js';
-import { dateToEpochTimestamp } from '../../utils/dateToEpochTimestamp.js';
-import { internalErrorMap } from '../../constants/internalErrorMap.js';
+
+import { QueryResolvers, ReturnStatus } from '../../generated/resolvers-types';
+import { dateToEpochTimestamp } from '../../utils/dateToEpochTimestamp';
+import { internalErrorMap } from '../../constants/errorMaps/internalErrorMap';
 
 const queries: QueryResolvers = {
   getUserLinks: async (_, {}, { prisma, userId }) => {
@@ -17,6 +18,7 @@ const queries: QueryResolvers = {
     const userLinks = await prisma.userLink.findMany({
       where: {
         userId,
+        isDeleted: false,
       },
     });
 
@@ -24,7 +26,7 @@ const queries: QueryResolvers = {
     if (!userLinks) {
       return {
         status: ReturnStatus.Error,
-        error: internalErrorMap['link/notFetched'],
+        error: internalErrorMap['userLink/failFetched'],
       };
     }
 
@@ -54,6 +56,7 @@ const queries: QueryResolvers = {
     const userLink = await prisma.userLink.findFirst({
       where: {
         id: linkId,
+        isDeleted: false,
       },
     });
 
@@ -61,7 +64,7 @@ const queries: QueryResolvers = {
     if (!userLink) {
       return {
         status: ReturnStatus.Error,
-        error: internalErrorMap['link/notFetched'],
+        error: internalErrorMap['userLink/failFetched'],
       };
     }
 
