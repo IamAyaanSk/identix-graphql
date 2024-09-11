@@ -1,6 +1,6 @@
-import { mutationTypeDefs, mutations } from './mutations.js';
-import { queryTypeDefs, queries } from './queries.js';
-import { types } from './gql-types.js';
+import { mutationTypeDefs, mutations } from '../../handlers/userLink/mutations';
+import { queryTypeDefs, queries } from '../../handlers/userLink/queries';
+import { types } from '../../handlers/userLink/gql-types';
 
 const typeDefs = [queryTypeDefs, mutationTypeDefs, types];
 
