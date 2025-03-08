@@ -37,7 +37,7 @@ This project is a GraphQL API for the Identix application. It will power the ove
 
 ### Getting Started
 1. Clone the repo
-``` git clone https://github.com/your_username_/Identix-GraphQL-API.git ```
+``` git clone https://github.com/IamAyaanSk/Identix-GraphQL-API.git ```
 
 2. Install pnpm
 ``` npm install pnpm ```
@@ -60,10 +60,6 @@ For production environment:
 ``` pnpm build ```
 
 ------------
-
-
-🔴 Note: As the service is hosted on a free tier ( which goes down on inactivity ) it may take some time at your initial request 
-
 
 ## Author
 ### Ayaan & Afnan
